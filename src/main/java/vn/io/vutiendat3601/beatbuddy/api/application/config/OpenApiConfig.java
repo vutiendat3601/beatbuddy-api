@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @OpenAPIDefinition(
     servers = {
       @Server(url = "https://api.beatbuddy.io.vn", description = "staging"),
+      @Server(url = "http://localhost:8000", description = "development")
     },
     info = @Info(title = "BeatBuddy APIs", version = "1.0", description = "BeatBuddy APIs"))
 public class OpenApiConfig {}

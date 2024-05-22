@@ -41,7 +41,7 @@ public class RouteSpecificationConfig {
       req.requestMatchers(POST, "/v1/auth/resources").authenticated();
 
       // Public routes
-      req.requestMatchers(GET, "/v1/auth/tokens/client-token", "/v1/catalog/scopes").permitAll();
+      req.requestMatchers(GET, "/v1/auth/token/client-token").permitAll();
       req.requestMatchers(GET, "/apidocs*/**", "/swagger-ui/**").permitAll();
       req.anyRequest().denyAll();
     };

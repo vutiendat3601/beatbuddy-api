@@ -20,9 +20,11 @@ springdoc:
     path: /apidocs
   swagger-ui:
     path: /apidocs.html
+    oauth2RedirectUrl: https://api.beatbuddy.io.vn/swagger-ui/oauth2-redirect.html
     oauth:
       client-id: web
       use-pkce-with-authorization-code-grant: true
+
 logging:
   level:
     root: INFO

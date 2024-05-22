@@ -91,7 +91,7 @@ security:
       authorities: track:view
 
     # Catalog Artist
-    - uris: /v1/catalog/artists,/v1/catalog/artists/{id}
+    - uris: /v1/catalog/artists,/v1/catalog/artists/{id},/v1/catalog/artists/{id}/popular-tracks
       method: GET
       authorities: artist:view
 

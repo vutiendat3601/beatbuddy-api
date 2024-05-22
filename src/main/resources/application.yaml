@@ -2,21 +2,7 @@ server:
   port: 8000
 spring:
   application:
-    name: api
-  # datasource:
-  #   url: jdbc:postgresql://localhost:5432/beatbuddy
-  #   username: beatbuddy
-  #   password: beatbuddy
-  jpa:
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        "[format_sql]": false
-        jdbc:
-          "[time_zone]": UTC
-        cache:
-          "[use_second_level_cache]": false
+    name: beatbuddy-api
   security:
     oauth2:
       resourceserver:
@@ -24,6 +10,11 @@ spring:
           jwk-set-uri: https://auth.beatbuddy.io.vn/realms/beatbuddy/protocol/openid-connect/certs
   devtools:
     add-properties: false
+    livereload:
+      enabled: false
+  docker:
+    compose:
+      enabled: false
 springdoc:
   api-docs:
     path: /apidocs
@@ -143,7 +134,6 @@ security:
     - uris: /v1/audio/files,/v1/audio/files/{id}
       method: GET
       authorities: audio:view-file
-
 # amazon:
 #   s3:
 #     accessKey: DO00JPHVYHZDQELCZL7B

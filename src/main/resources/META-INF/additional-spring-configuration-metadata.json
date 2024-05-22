@@ -1,0 +1,84 @@
+{
+  "properties": [
+    {
+      "name": "amazon.s3.access-key",
+      "type": "java.lang.String",
+      "description": "A description for 'amazon.s3.access-key'"
+    },
+    {
+      "name": "amazon.s3.secretKey",
+      "type": "java.lang.String",
+      "description": "A description for 'amazon.s3.secretKey'"
+    },
+    {
+      "name": "amazon.s3.region",
+      "type": "java.lang.String",
+      "description": "A description for 'amazon.s3.region'"
+    },
+    {
+      "name": "amazon.s3.serviceEndpoint",
+      "type": "java.lang.String",
+      "description": "A description for 'amazon.s3.serviceEndpoint'"
+    },
+    {
+      "name": "amazon.s3.bucketName",
+      "type": "java.lang.String",
+      "description": "A description for 'amazon.s3.bucketName'"
+    },
+    {
+      "name": "amazon.s3.cdnBaseUrls",
+      "type": "java.lang.String[]",
+      "description": "A description for 'amazon.s3.cdnBaseUrls'"
+    },
+    {
+      "name": "yt-dlp.regexes",
+      "type": "java.lang.String[]",
+      "description": "A description for 'yt-dlp.regexes'"
+    },
+    {
+      "name": "security.routeSpecs",
+      "type": "vn.io.vutiendat3601.beatbuddy.api.security.RouteSpecification[]",
+      "description": "A description for 'security.routeSpecs'"
+    },
+    {
+      "name": "keycloak.client.webconfidential.auth-server-url",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.authorization.client.auth-server-url'"
+    },
+    {
+      "name": "keycloak.client.webconfidential.realm",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.client.webconfidential.realm'"
+    },
+    {
+      "name": "keycloak.client.webconfidential.clientId",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.authorization.client.clientId'"
+    },
+    {
+      "name": "keycloak.client.webconfidential.clientSecret",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.client.webconfidential.clientSecret'"
+    },
+    {
+      "name": "keycloak.authorization.service.client.auth-server-url",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.authorization.client.auth-server-url'"
+    },
+    {
+      "name": "keycloak.authorization.service.client.realm",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.authorization.service.client.realm'"
+    },
+    {
+      "name": "keycloak.authorization.service.client.clientId",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.authorization.client.clientId'"
+    },
+    {
+      "name": "keycloak.authorization.service.client.clientSecret",
+      "type": "java.lang.String",
+      "description": "A description for 'keycloak.client.webconfidential.clientSecret'"
+    }
+  ]
+}

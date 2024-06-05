@@ -16,7 +16,7 @@ import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 public class JpaAuditConfig {
   @Bean
   AuditorAware<String> auditorAware() {
-    return () -> Optional.ofNullable(UserContext.getUserId());
+    return () -> Optional.ofNullable(UserContext.getUserPkId());
   }
 
   @Bean

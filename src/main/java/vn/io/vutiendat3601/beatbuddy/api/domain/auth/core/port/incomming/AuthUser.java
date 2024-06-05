@@ -9,5 +9,5 @@ public interface AuthUser {
 
   User getUserById(String id);
 
-  List<User> getUserByUrns(Iterable<String> urns);
+  List<User> getUserByIds(Iterable<String> urns);
 }

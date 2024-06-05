@@ -20,7 +20,7 @@ public interface Catalog {
 
   void createPlaylist(String name, Boolean isPublic, String thumbnail, String description);
 
-  Playlist getPlaylistById(String id);
+  Playlist getPublicPlaylistById(String id);
 
   Pagination<Track> getArtistPopularTracks(String id, int page, int size);
 
@@ -31,4 +31,8 @@ public interface Catalog {
   Set<Pagination<?>> search(String query, Set<String> types, int page, int size);
 
   User getUserById(String id);
+
+  Pagination<Playlist> getUserPlaylists(int page, int size);
+
+  void addTrackToPlaylist(String id, List<String> trackIds);
 }

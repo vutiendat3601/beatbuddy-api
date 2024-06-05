@@ -1,24 +1,9 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application;
+package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.controller;
 
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.ArtistConstant.ARTIST_ID_LENGTH;
-import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_CREATED_SUCCESS;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ID_LENGTH;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.TrackConstant.TRACK_ID_LENGTH;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.UserConstant.USER_ID_LENGTH;
-
-import java.util.List;
-import java.util.Set;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -27,9 +12,19 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import vn.io.vutiendat3601.beatbuddy.api.common.dto.ResponseDto;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.ArtistDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.SearchDto;
@@ -38,7 +33,6 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.UserDt
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
 
 @SecurityRequirement(name = "web")
-@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("v1/catalog")
@@ -180,19 +174,6 @@ public class CatalogController {
   /* # Artist */
 
   /* #: Playlist */
-
-  @Tag(name = "Playlist")
-  @Operation(summary = "Create Playlist", description = "Create a new Playlist")
-  @PostMapping(path = "playlists")
-  public ResponseEntity<ResponseDto> createPlaylist(
-      @RequestParam String name,
-      @RequestParam Boolean isPublic,
-      @RequestParam String thumbnail,
-      @RequestParam String description) {
-    catalog.createPlaylist(name, isPublic, thumbnail, description);
-    return catalogPresenter.presentResponseOk(PLAYLIST_CREATED_SUCCESS);
-  }
-
   @Tag(name = "Playlist")
   @Operation(summary = "Get Playlist", description = "Get a Playlist by id")
   @GetMapping(path = "playlists/{id}")
@@ -200,8 +181,7 @@ public class CatalogController {
       @Length(min = PLAYLIST_ID_LENGTH, max = PLAYLIST_ID_LENGTH, message = "Wrong id format")
           @PathVariable
           String id) {
-    return catalogPresenter.presentPlaylist(catalog.getPlaylistById(id));
+    return catalogPresenter.presentPlaylist(catalog.getPublicPlaylistById(id));
   }
   /* # Playlist */
-
 }

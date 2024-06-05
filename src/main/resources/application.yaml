@@ -60,7 +60,7 @@ auth:
       partSeparator: ":"
     types:
       - name: playlist
-        uriPrefixes: [/v1/playlists]
+        uriPrefixes: ["/v1/playlists/{id}", "/v1/playlists/{id}/add-item"]
         ownerScopes:
           [playlist:permission, playlist:view, playlist:edit, playlist:delete]
         requesterScopes: [playlist:permission, playlist:view, playlist:edit]
@@ -102,10 +102,7 @@ security:
     - uris: /v1/catalog/playlists/{id}
       method: GET
       authorities: playlist:view
-    - uris: /v1/catalog/playlists/{id}
-      method: PUT
-      authorities: playlist:edit
-    - uris: /v1/catalog/playlists/{id}/items
+    - uris: /v1/playlists/{id},/v1/playlists/{id}/add-item
       method: PUT
       authorities: playlist:edit
     - uris: /v1/catalog/playlists/{id}/items

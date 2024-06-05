@@ -16,6 +16,7 @@ public record Playlist(
     Boolean isPublic,
     Long totalLikes,
     String ownerId,
+    Boolean isDeleted,
     List<String> itemUrns) {
 
   public Playlist(String id, String name, String ownerId) {
@@ -29,13 +30,18 @@ public record Playlist(
         true,
         0L,
         ownerId,
+        false,
         new LinkedList<>());
     if (id == null || name == null || ownerId == null) {
-      throw new IllegalArgumentException("[id, name, ownerUrn] is required");
+      throw new IllegalArgumentException("[id, name, ownerId] is required");
     }
   }
 
   public Playlist(UUID pkId) {
-    this(pkId, null, null, null, null, null, null, null, null, new LinkedList<>());
+    this(pkId, null, null, null, null, null, null, null, null, false, new LinkedList<>());
+  }
+
+  public void addItemUrnsAtHead(List<String> itemUrns) {
+    this.itemUrns.addAll(0, itemUrns);
   }
 }

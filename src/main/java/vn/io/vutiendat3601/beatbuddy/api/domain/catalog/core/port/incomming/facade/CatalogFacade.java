@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import vn.io.vutiendat3601.beatbuddy.api.client.AuthClient;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserDetailResponse;
 import vn.io.vutiendat3601.beatbuddy.api.client.model.UserResponse;
 import vn.io.vutiendat3601.beatbuddy.api.common.repository.SearchableRepository;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
@@ -37,6 +36,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.Artis
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.PlaylistRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.TrackRepository;
 import vn.io.vutiendat3601.beatbuddy.api.util.StringUtils;
+import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 
 @Service
 public class CatalogFacade implements Catalog {
@@ -126,18 +126,34 @@ public class CatalogFacade implements Catalog {
     final String id = StringUtils.makeRandomString(PLAYLIST_ID_LENGTH);
     final String urn = PLAYLIST_URN_PREFIX + ":" + id;
     authClient.createResource(urn, name);
-    final UserDetailResponse userDetailResp = authClient.getCurrentUserDetail().getBody();
-    final Playlist playlist = new Playlist(id, name, userDetailResp.getId());
+    final String ownerId = UserContext.getUserId();
+    final Playlist playlist = new Playlist(id, name, ownerId);
     playlistRepo.save(playlist);
   }
 
   @Override
-  public Playlist getPlaylistById(String id) {
+  public Playlist getPublicPlaylistById(String id) {
+    final Playlist playlist =
+        playlistRepo
+            .findByIdAndIsPublicTrue(id)
+            .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
+    return playlist;
+  }
+
+  @Override
+  public Pagination<Playlist> getUserPlaylists(int page, int size) {
+    final String ownerId = UserContext.getUserId();
+    return playlistRepo.findAllByOwnerId(ownerId, page, size);
+  }
+
+  @Override
+  public void addTrackToPlaylist(String id, List<String> trackIds) {
     final Playlist playlist =
         playlistRepo
             .findById(id)
             .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
-    return playlist;
+    playlist.addItemUrnsAtHead(trackIds);
+    playlistRepo.save(playlist);
   }
 
   /* # Playlist */

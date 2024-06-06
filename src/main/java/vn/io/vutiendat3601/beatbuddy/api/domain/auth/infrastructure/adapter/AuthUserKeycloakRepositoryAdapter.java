@@ -28,11 +28,11 @@ public class AuthUserKeycloakRepositoryAdapter implements AuthUserRepository {
   }
 
   @Override
-  public List<User> findByUrns(Iterable<String> urns) {
+  public List<User> findByIds(Iterable<String> ids) {
     final List<User> users = new LinkedList<>();
-    for (String urn : urns) {
+    for (String id : ids) {
       userResourceKeycloakRepo
-          .findByQuery("urn:" + urn)
+          .findByQuery("id:" + id)
           .ifPresent(
               userPo -> {
                 users.add(UserMapper.mapToUser(userPo));

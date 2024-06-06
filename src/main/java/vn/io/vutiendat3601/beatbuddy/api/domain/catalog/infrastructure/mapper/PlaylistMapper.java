@@ -15,6 +15,7 @@ public interface PlaylistMapper {
         playlistPo.getIsPublic(),
         playlistPo.getTotalLikes(),
         playlistPo.getOwnerId(),
+        playlistPo.getIsDeleted(),
         playlistPo.getItemUrns());
   }
 }

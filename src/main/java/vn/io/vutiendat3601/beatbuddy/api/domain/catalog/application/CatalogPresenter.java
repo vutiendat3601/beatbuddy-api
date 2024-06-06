@@ -99,19 +99,23 @@ public class CatalogPresenter {
     return ResponseEntity.ok(artistDtos);
   }
 
-  public ResponseEntity<Pagination<ArtistDto>> presentArtistPage(Pagination<Artist> trackPage) {
-    Pagination<ArtistDto> artistDtoPage = trackPage.map(ArtistMapper::mapToArtistDto);
+  public ResponseEntity<Pagination<ArtistDto>> presentArtistPage(Pagination<Artist> artistPage) {
+    Pagination<ArtistDto> artistDtoPage = artistPage.map(ArtistMapper::mapToArtistDto);
     return ResponseEntity.ok(artistDtoPage);
   }
 
   /* # Artist */
 
   /* #: Playlist */
-
   public ResponseEntity<PlaylistDto> presentPlaylist(Playlist playlist) {
     PlaylistDto playlistDto = PlaylistMapper.mapToPlaylistDto(playlist);
     return ResponseEntity.ok(playlistDto);
   }
 
+  public ResponseEntity<Pagination<PlaylistDto>> presentPlaylistPage(
+      Pagination<Playlist> playlistPage) {
+    Pagination<PlaylistDto> playlistDtosPage = playlistPage.map(PlaylistMapper::mapToPlaylistDto);
+    return ResponseEntity.ok(playlistDtosPage);
+  }
   /* # Playlist */
 }

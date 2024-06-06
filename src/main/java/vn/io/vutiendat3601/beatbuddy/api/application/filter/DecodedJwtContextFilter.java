@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 
 public class DecodedJwtContextFilter extends OncePerRequestFilter {
+  private static final String USER_ID_CLAIM = "user_id";
+
   @Override
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -23,7 +25,11 @@ public class DecodedJwtContextFilter extends OncePerRequestFilter {
     if (authentication instanceof JwtAuthenticationToken) {
       final JwtAuthenticationToken jwtAuthentication = (JwtAuthenticationToken) authentication;
       final Jwt jwt = jwtAuthentication.getToken();
-      UserContext.setUserId(jwt.getSubject());
+      final String pkId = jwt.getSubject();
+      final String userId = jwt.getClaimAsString(USER_ID_CLAIM);
+
+      UserContext.setUserPkId(pkId);
+      UserContext.setUserId(userId);
       UserContext.setJwtAuthorizationToken(jwt.getTokenValue());
     }
     filterChain.doFilter(request, response);

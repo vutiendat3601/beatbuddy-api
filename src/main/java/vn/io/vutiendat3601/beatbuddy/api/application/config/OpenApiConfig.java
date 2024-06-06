@@ -6,6 +6,7 @@ import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.OPENIDCONNE
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 
 @SecurityScheme(
     name = "web",
@@ -16,5 +17,9 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
     type = OPENIDCONNECT,
     in = HEADER)
 @OpenAPIDefinition(
+    servers = {
+      @Server(url = "https://api.beatbuddy.io.vn", description = "staging"),
+      @Server(url = "http://localhost:8000", description = "development")
+    },
     info = @Info(title = "BeatBuddy APIs", version = "1.0", description = "BeatBuddy APIs"))
 public class OpenApiConfig {}

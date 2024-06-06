@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.5</version>
+    <version>3.3.0</version>
     <relativePath />
   </parent>
   <groupId>vn.io.vutiendat3601.beatbuddy</groupId>
@@ -18,6 +18,10 @@
     <java.version>17</java.version>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -90,7 +94,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -112,7 +115,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <build>
     <plugins>
       <plugin>
@@ -125,6 +127,26 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>3.4.1</version>
+        <configuration>
+          <from>
+            <image>
+              eclipse-temurin:17.0.11_9-jre-jammy@sha256:d7d18c361578b6d2395054bc89b7a4790f696120d91a1955ac52ecf4e12d77c8</image>
+          </from>
+          <to>
+            <image>docker.io/vutiendat3601/beatbuddy-${project.artifactId}</image>
+            <tags>
+              <tag>${project.version}</tag>
+            </tags>
+          </to>
+          <container>
+            <mainClass>vn.io.vutiendat3601.beatbuddy.api.BeatBuddyApiApplication</mainClass>
+          </container>
         </configuration>
       </plugin>
     </plugins>

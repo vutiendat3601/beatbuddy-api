@@ -20,9 +20,9 @@ public class AuthUserFacade implements AuthUser {
 
   @Override
   public User getCurrentUserDetail() {
-    final String pkId = UserContext.getUserId();
+    final String userId = UserContext.getUserId();
     return userResourceRepo
-        .findByPkId(pkId)
+        .findById(userId)
         .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
   }
 
@@ -34,7 +34,7 @@ public class AuthUserFacade implements AuthUser {
   }
 
   @Override
-  public List<User> getUserByUrns(Iterable<String> urns) {
-    return userResourceRepo.findByUrns(urns);
+  public List<User> getUserByIds(Iterable<String> ids) {
+    return userResourceRepo.findByIds(ids);
   }
 }

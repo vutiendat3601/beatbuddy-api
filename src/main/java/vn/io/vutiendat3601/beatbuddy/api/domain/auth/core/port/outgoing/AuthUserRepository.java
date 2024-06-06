@@ -9,5 +9,5 @@ public interface AuthUserRepository {
 
   Optional<User> findById(String id);
 
-  List<User> findByUrns(Iterable<String> urns);
+  List<User> findByIds(Iterable<String> urns);
 }

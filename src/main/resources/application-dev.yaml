@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        "[format_sql]": false
+        jdbc:
+          "[time_zone]": UTC
+        cache:
+          "[use_second_level_cache]": false
+  devtools:
+    add-properties: true
+    livereload:
+      enabled: true
+  docker:
+    compose:
+      enabled: true
+      skip:
+        in-tests: false

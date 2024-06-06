@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.AuthResourceConfig;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.exception.UserNotFoundException;
@@ -50,12 +51,12 @@ public class AuthResourceFacade implements AuthResource {
     if (resourceTypes.containsKey(type)) {
       final User owner =
           userRepo
-              .findByPkId(UserContext.getUserId())
+              .findById(UserContext.getUserId())
               .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
       final ResourceType resourceType = resourceTypes.get(type);
       final Set<URI> uris =
           resourceType.getUriPrefixes().stream()
-              .map(prefix -> URI.create(prefix + "/" + id))
+              .map(prefix -> UriComponentsBuilder.fromPath(prefix).buildAndExpand(id).toUri())
               .collect(Collectors.toSet());
       final Set<ScopePermission> permissions =
           resourceType.getOwnerScopes().stream()

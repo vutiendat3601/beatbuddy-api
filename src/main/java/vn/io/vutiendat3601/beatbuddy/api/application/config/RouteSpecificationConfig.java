@@ -28,6 +28,14 @@ public class RouteSpecificationConfig {
   @JsonProperty("route-specs")
   private List<RouteSpecification> routeSpecs = new LinkedList<>();
 
+  private final String[] GET_AUTHENTICATED_ROUTES = {"/v1/auth/me", "/v1/playlists"};
+  private final String[] POST_AUTHENTICATED_ROUTES = {
+    "/v1/auth/resources",
+  };
+  private final String[] GET_PUBLIC_ROUTES = {
+    "/v1/auth/token/client-token", "/apidocs*/**", "/swagger-ui/**",
+  };
+
   public Customizer<
           AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
       getRouteSpecification() {
@@ -37,12 +45,13 @@ public class RouteSpecificationConfig {
             .hasAnyAuthority(routeSpec.getAuthorities().toArray(String[]::new));
       }
       // Authenticated routes
-      req.requestMatchers(GET, "/v1/auth/users/me").authenticated();
-      req.requestMatchers(POST, "/v1/auth/resources").authenticated();
+      req.requestMatchers(GET, GET_AUTHENTICATED_ROUTES).authenticated();
+      req.requestMatchers(POST, POST_AUTHENTICATED_ROUTES).authenticated();
 
       // Public routes
-      req.requestMatchers(GET, "/v1/auth/tokens/client-token", "/v1/catalog/scopes").permitAll();
-      req.requestMatchers(GET, "/apidocs*/**", "/swagger-ui/**").permitAll();
+      req.requestMatchers(GET, GET_PUBLIC_ROUTES).permitAll();
+
+      // Deny all other requests
       req.anyRequest().denyAll();
     };
   }

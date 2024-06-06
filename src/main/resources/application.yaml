@@ -2,21 +2,7 @@ server:
   port: 8000
 spring:
   application:
-    name: api
-  # datasource:
-  #   url: jdbc:postgresql://localhost:5432/beatbuddy
-  #   username: beatbuddy
-  #   password: beatbuddy
-  jpa:
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        "[format_sql]": false
-        jdbc:
-          "[time_zone]": UTC
-        cache:
-          "[use_second_level_cache]": false
+    name: beatbuddy-api
   security:
     oauth2:
       resourceserver:
@@ -24,14 +10,21 @@ spring:
           jwk-set-uri: https://auth.beatbuddy.io.vn/realms/beatbuddy/protocol/openid-connect/certs
   devtools:
     add-properties: false
+    livereload:
+      enabled: false
+  docker:
+    compose:
+      enabled: false
 springdoc:
   api-docs:
     path: /apidocs
   swagger-ui:
     path: /apidocs.html
+    oauth2RedirectUrl: https://api.beatbuddy.io.vn/swagger-ui/oauth2-redirect.html
     oauth:
       client-id: web
       use-pkce-with-authorization-code-grant: true
+
 logging:
   level:
     root: INFO
@@ -67,7 +60,7 @@ auth:
       partSeparator: ":"
     types:
       - name: playlist
-        uriPrefixes: [/v1/playlists]
+        uriPrefixes: ["/v1/playlists/{id}", "/v1/playlists/{id}/add-item"]
         ownerScopes:
           [playlist:permission, playlist:view, playlist:edit, playlist:delete]
         requesterScopes: [playlist:permission, playlist:view, playlist:edit]
@@ -98,7 +91,7 @@ security:
       authorities: track:view
 
     # Catalog Artist
-    - uris: /v1/catalog/artists,/v1/catalog/artists/{id}
+    - uris: /v1/catalog/artists,/v1/catalog/artists/{id},/v1/catalog/artists/{id}/popular-tracks
       method: GET
       authorities: artist:view
 
@@ -109,10 +102,7 @@ security:
     - uris: /v1/catalog/playlists/{id}
       method: GET
       authorities: playlist:view
-    - uris: /v1/catalog/playlists/{id}
-      method: PUT
-      authorities: playlist:edit
-    - uris: /v1/catalog/playlists/{id}/items
+    - uris: /v1/playlists/{id},/v1/playlists/{id}/add-item
       method: PUT
       authorities: playlist:edit
     - uris: /v1/catalog/playlists/{id}/items
@@ -143,7 +133,6 @@ security:
     - uris: /v1/audio/files,/v1/audio/files/{id}
       method: GET
       authorities: audio:view-file
-
 # amazon:
 #   s3:
 #     accessKey: DO00JPHVYHZDQELCZL7B

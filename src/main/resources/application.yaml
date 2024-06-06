@@ -85,8 +85,8 @@ security:
       method: GET
       authorities: user:view
 
-    # Catalog Track
-    - uris: /v1/catalog/tracks,/v1/catalog/tracks/{id}
+    # Track
+    - uris: /v1/tracks,/v1/tracks/{id}
       method: GET
       authorities: track:view
 

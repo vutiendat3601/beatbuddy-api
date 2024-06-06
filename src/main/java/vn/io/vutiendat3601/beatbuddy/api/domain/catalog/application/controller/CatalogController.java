@@ -2,7 +2,6 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.controller;
 
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.ArtistConstant.ARTIST_ID_LENGTH;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ID_LENGTH;
-import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.TrackConstant.TRACK_ID_LENGTH;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.UserConstant.USER_ID_LENGTH;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -103,31 +102,6 @@ public class CatalogController {
   }
 
   /* # User */
-
-  /* #: Track */
-  @Tag(name = "Track")
-  @Operation(summary = "Get Track", description = "Get a Track by id")
-  @GetMapping("tracks/{id}")
-  public ResponseEntity<TrackDto> getTrack(
-      @Length(min = TRACK_ID_LENGTH, max = TRACK_ID_LENGTH, message = "Wrong id format")
-          @PathVariable
-          String id) {
-    return catalogPresenter.presentTrack(catalog.getTrackById(id));
-  }
-
-  @Tag(name = "Track")
-  @Operation(summary = "Get Tracks", description = "Get several Tracks by ids")
-  @GetMapping("tracks")
-  public ResponseEntity<List<TrackDto>> getTracks(
-      @Size(min = 1, max = 100) @RequestParam
-          List<
-                  @Length(min = TRACK_ID_LENGTH, max = TRACK_ID_LENGTH, message = "Wrong id format")
-                  String>
-              ids) {
-    return catalogPresenter.presentTracks(catalog.getTrackByIds(ids));
-  }
-
-  /* # Track */
 
   /* #: Artist */
   @Tag(name = "Artist")

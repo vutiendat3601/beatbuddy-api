@@ -85,13 +85,13 @@ security:
       method: GET
       authorities: user:view
 
-    # Catalog Track
-    - uris: /v1/catalog/tracks,/v1/catalog/tracks/{id}
+    # Track
+    - uris: /v1/tracks,/v1/tracks/{id}
       method: GET
       authorities: track:view
 
-    # Catalog Artist
-    - uris: /v1/catalog/artists,/v1/catalog/artists/{id},/v1/catalog/artists/{id}/popular-tracks
+    # Artist
+    - uris: /v1/artists,/v1/artists/{id},/v1/artists/{id}/popular-tracks
       method: GET
       authorities: artist:view
 

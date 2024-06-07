@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: beatbuddy-api
+  jpa:
+    open-in-view: false
   security:
     oauth2:
       resourceserver:

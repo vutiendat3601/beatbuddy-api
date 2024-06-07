@@ -14,10 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import vn.io.vutiendat3601.beatbuddy.api.client.AuthClient;
 import vn.io.vutiendat3601.beatbuddy.api.client.model.UserResponse;
 import vn.io.vutiendat3601.beatbuddy.api.common.repository.SearchableRepository;
@@ -161,7 +159,7 @@ public class CatalogFacade implements Catalog {
   /* #: Search */
   @Override
   public Set<Pagination<?>> search(String query, Set<String> types, int page, int size) {
-    // TODO: handle query
+    query = StringUtils.removeAccent(query);
     final SearchRequest searchReq = new SearchRequest(query, page, size);
     final Set<Pagination<?>> results = new LinkedHashSet<>();
     types.stream()

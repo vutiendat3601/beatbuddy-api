@@ -1,7 +1,6 @@
-package vn.io.vutiendat3601.beatbuddy.api.client.model;
+package vn.io.vutiendat3601.beatbuddy.api.client.auth.model;
 
 import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

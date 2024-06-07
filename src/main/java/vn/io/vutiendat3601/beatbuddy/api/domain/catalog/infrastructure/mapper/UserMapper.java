@@ -1,7 +1,7 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.mapper;
 
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserDetailResponse;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserResponse;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserDetailResponse;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserResponse;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.User;
 
 public interface UserMapper {

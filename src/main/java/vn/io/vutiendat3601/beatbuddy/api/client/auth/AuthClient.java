@@ -1,12 +1,11 @@
-package vn.io.vutiendat3601.beatbuddy.api.client;
+package vn.io.vutiendat3601.beatbuddy.api.client.auth;
 
 import java.util.List;
 import java.util.Set;
 import org.springframework.http.ResponseEntity;
-
-import vn.io.vutiendat3601.beatbuddy.api.client.model.Response;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserDetailResponse;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserResponse;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.Response;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserDetailResponse;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserResponse;
 
 public interface AuthClient {
   /* #: User */

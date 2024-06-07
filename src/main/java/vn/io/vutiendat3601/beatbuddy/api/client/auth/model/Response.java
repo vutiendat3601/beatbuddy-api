@@ -1,10 +1,9 @@
-package vn.io.vutiendat3601.beatbuddy.api.client.model;
-
-import org.springframework.http.HttpStatus;
+package vn.io.vutiendat3601.beatbuddy.api.client.auth.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -2,18 +2,16 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.client;
 
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import vn.io.vutiendat3601.beatbuddy.api.client.AuthClient;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.Response;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserDetailResponse;
-import vn.io.vutiendat3601.beatbuddy.api.client.model.UserResponse;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.AuthClient;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.Response;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserDetailResponse;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserResponse;
 
 @FeignClient(name = "auth", url = "${client.auth.url}")
 public interface AuthFeignClient extends AuthClient {

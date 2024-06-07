@@ -1,14 +1,14 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.AccessTokenResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model.TokenDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model.UserDetailDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.presenter.UserPresenter;
@@ -32,6 +32,7 @@ public class AuthController {
     webRepresentationClient = webRepresentationConfig.createClient();
   }
 
+  @SecurityRequirement(name = "web")
   @Operation(summary = "Get current User in detail")
   @GetMapping("me")
   public ResponseEntity<UserDetailDto> getCurrentUserDetail() {

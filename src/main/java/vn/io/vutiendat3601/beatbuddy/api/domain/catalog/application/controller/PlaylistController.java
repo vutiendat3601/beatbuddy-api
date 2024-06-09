@@ -4,6 +4,8 @@ import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.Playlist
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ID_LENGTH;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
@@ -38,7 +40,11 @@ public class PlaylistController {
   private final CatalogPresenter catalogPresenter;
 
   @Tag(name = "Playlist")
-  @Operation(summary = "Create Playlist", description = "Create a new Playlist")
+  @Operation(
+      summary = "Create Playlist",
+      description = "Create a new Playlist",
+      requestBody =
+          @RequestBody(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)))
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<ResponseDto> createPlaylist(
       @NotBlank(message = "name is required") @RequestParam String name,

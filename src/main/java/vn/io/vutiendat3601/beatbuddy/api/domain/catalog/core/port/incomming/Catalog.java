@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Artist;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Like;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Playlist;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Track;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.User;
@@ -34,4 +35,8 @@ public interface Catalog {
   Pagination<Playlist> getUserPlaylists(int page, int size);
 
   void addTrackToPlaylist(String id, List<String> trackIds);
+
+  Like getCurrentUserLikeDetail();
+
+  void likeTrack(String id);
 }

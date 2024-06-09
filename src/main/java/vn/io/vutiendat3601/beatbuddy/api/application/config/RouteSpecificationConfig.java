@@ -28,17 +28,15 @@ public class RouteSpecificationConfig {
   @JsonProperty("route-specs")
   private List<RouteSpecification> routeSpecs = new LinkedList<>();
 
-  private final String[] GET_AUTHENTICATED_ROUTES = {"/v1/auth/me", "/v1/playlists"};
+  private final String[] GET_AUTHENTICATED_ROUTES = { "/v1/auth/me", "/v1/playlists", "/v1/catalog/me/like" };
   private final String[] POST_AUTHENTICATED_ROUTES = {
-    "/v1/auth/resources",
+      "/v1/auth/resources",
   };
   private final String[] GET_PUBLIC_ROUTES = {
-    "/v1/auth/token/client-token", "/apidocs*/**", "/swagger-ui/**",
+      "/v1/auth/token/client-token", "/apidocs*/**", "/swagger-ui/**",
   };
 
-  public Customizer<
-          AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>
-      getRouteSpecification() {
+  public Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> getRouteSpecification() {
     return req -> {
       for (RouteSpecification routeSpec : routeSpecs) {
         req.requestMatchers(routeSpec.getMethod(), routeSpec.getUris().toArray(String[]::new))

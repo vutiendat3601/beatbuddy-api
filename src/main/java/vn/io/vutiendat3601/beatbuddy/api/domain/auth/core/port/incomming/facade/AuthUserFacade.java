@@ -16,25 +16,25 @@ import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 @RequiredArgsConstructor
 @Service
 public class AuthUserFacade implements AuthUser {
-  private final AuthUserRepository userResourceRepo;
+  private final AuthUserRepository authUserRepo;
 
   @Override
   public User getCurrentUserDetail() {
-    final String userId = UserContext.getUserId();
-    return userResourceRepo
-        .findById(userId)
+    final String userPkId = UserContext.getUserPkId();
+    return authUserRepo
+        .findByPkId(userPkId)
         .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
   }
 
   @Override
   public User getUserById(String id) {
-    return userResourceRepo
+    return authUserRepo
         .findById(id)
         .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
   }
 
   @Override
   public List<User> getUserByIds(Iterable<String> ids) {
-    return userResourceRepo.findByIds(ids);
+    return authUserRepo.findByIds(ids);
   }
 }

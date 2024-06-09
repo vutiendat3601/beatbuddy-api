@@ -1,14 +1,12 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.adapter;
 
 import java.util.Optional;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.RequiredArgsConstructor;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Playlist;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.PlaylistRepository;
@@ -36,14 +34,7 @@ public class PlaylistJpaRepositoryAdapter implements PlaylistRepository {
             playlist.isDeleted(),
             playlist.itemUrns());
     if (playlist.pkId() != null) {
-      playlistJpaRepo
-          .findById(playlist.pkId())
-          .ifPresent(
-              p -> {
-                playlistPo.setPkId(p.getPkId());
-                playlistPo.setCreatedAt(p.getCreatedAt());
-                playlistPo.setCreatedBy(p.getCreatedBy());
-              });
+      playlistJpaRepo.findById(playlist.pkId()).ifPresent(p -> playlistPo.setPkId(p.getPkId()));
     }
     playlistJpaRepo.save(playlistPo);
   }

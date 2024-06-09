@@ -16,15 +16,18 @@ import lombok.RequiredArgsConstructor;
 import vn.io.vutiendat3601.beatbuddy.api.common.dto.ResponseDto;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.ArtistMapper;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.LikeMapper;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.PlaylistMapper;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.TrackMapper;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.UserMapper;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.ArtistDto;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.LikeDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.SearchDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.TrackDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.UserDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Artist;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Like;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Playlist;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Track;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.User;
@@ -39,7 +42,7 @@ public class CatalogPresenter {
 
   /* # Common */
 
-  /* #: Search */
+  /* #: Catalog */
   public ResponseEntity<SearchDto> presentSearch(
       Set<Pagination<?>> results, Set<String> types, Integer page, Integer size) {
     final Map<String, Pagination<?>> resultsMap = new HashMap<>();
@@ -62,7 +65,10 @@ public class CatalogPresenter {
     return ResponseEntity.ok(new SearchDto(resultsMap, types, page, size));
   }
 
-  /* # Search */
+  public ResponseEntity<LikeDto> presentLike(Like like) {
+    return ResponseEntity.ok(LikeMapper.mapToLikeDto(like));
+  }
+  /* # Catalog */
 
   /* #: User */
   public ResponseEntity<UserDto> presentUser(User user) {

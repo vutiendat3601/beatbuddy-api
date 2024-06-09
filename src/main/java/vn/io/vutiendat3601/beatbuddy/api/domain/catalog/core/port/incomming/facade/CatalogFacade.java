@@ -26,11 +26,13 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.exception.PlaylistN
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.exception.TrackNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.exception.UserNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Artist;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Like;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Playlist;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Track;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.User;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.ArtistRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.LikeRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.PlaylistRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.TrackRepository;
 import vn.io.vutiendat3601.beatbuddy.api.util.StringUtils;
@@ -42,21 +44,23 @@ public class CatalogFacade implements Catalog {
   private final ArtistRepository artistRepo;
   private final PlaylistRepository playlistRepo;
   private final AuthClient authClient;
+  private final LikeRepository likeRepo;
   private final Map<String, SearchableRepository<?>> searchableRepos;
 
   public CatalogFacade(
       TrackRepository trackRepo,
       ArtistRepository artistRepo,
       PlaylistRepository playlistRepo,
-      AuthClient authClient) {
+      AuthClient authClient,
+      LikeRepository likeRepo) {
     this.trackRepo = trackRepo;
     this.artistRepo = artistRepo;
     this.playlistRepo = playlistRepo;
+    this.likeRepo = likeRepo;
     this.authClient = authClient;
-    searchableRepos =
-        Map.of(
-            TRACK_TYPE, trackRepo,
-            ARTIST_TYPE, artistRepo);
+    this.searchableRepos = Map.of(
+        TRACK_TYPE, trackRepo,
+        ARTIST_TYPE, artistRepo);
   }
 
   /* #: User */
@@ -98,6 +102,10 @@ public class CatalogFacade implements Catalog {
     return trackRepo.findByOrderByTotalLikesDesc(page, size);
   }
 
+  @Override
+  public void likeTrack(String id) {
+    // TODO implement like track Phat
+  }
   /* # Track */
 
   /* #: Artist */
@@ -131,10 +139,9 @@ public class CatalogFacade implements Catalog {
 
   @Override
   public Playlist getPublicPlaylistById(String id) {
-    final Playlist playlist =
-        playlistRepo
-            .findByIdAndIsPublicTrue(id)
-            .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
+    final Playlist playlist = playlistRepo
+        .findByIdAndIsPublicTrue(id)
+        .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
     return playlist;
   }
 
@@ -146,17 +153,16 @@ public class CatalogFacade implements Catalog {
 
   @Override
   public void addTrackToPlaylist(String id, List<String> trackIds) {
-    final Playlist playlist =
-        playlistRepo
-            .findById(id)
-            .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
+    final Playlist playlist = playlistRepo
+        .findById(id)
+        .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
     playlist.addItemUrnsAtHead(trackIds);
     playlistRepo.save(playlist);
   }
 
   /* # Playlist */
 
-  /* #: Search */
+  /* #: Catalog */
   @Override
   public Set<Pagination<?>> search(String query, Set<String> types, int page, int size) {
     query = StringUtils.removeAccent(query);
@@ -164,11 +170,22 @@ public class CatalogFacade implements Catalog {
     final Set<Pagination<?>> results = new LinkedHashSet<>();
     types.stream()
         .forEach(
-            type ->
-                Optional.ofNullable(searchableRepos.get(type))
-                    .ifPresent(repo -> results.add(repo.findBySearchRequest(searchReq))));
+            type -> Optional.ofNullable(searchableRepos.get(type))
+                .ifPresent(repo -> results.add(repo.findBySearchRequest(searchReq))));
     return results;
   }
 
-  /* # Search */
+  @Override
+  public Like getCurrentUserLikeDetail() {
+    final String ownerId = UserContext.getUserId();
+    return likeRepo
+        .findByOwnerId(ownerId)
+        .orElseGet(
+            () -> {
+              final Like like = new Like(ownerId);
+              likeRepo.save(like);
+              return like;
+            });
+  }
+  /* # Catalog */
 }

@@ -97,23 +97,23 @@ security:
       method: GET
       authorities: artist:view
 
-    # Catalog Playlist
-    - uris: /v1/catalog/playlists
+    # Playlist
+    - uris: /v1/playlists
       method: POST
       authorities: playlist:create
-    - uris: /v1/catalog/playlists/{id}
+    - uris: /v1/playlists/{id}
       method: GET
       authorities: playlist:view
     - uris: /v1/playlists/{id},/v1/playlists/{id}/add-item
       method: PUT
       authorities: playlist:edit
-    - uris: /v1/catalog/playlists/{id}/items
+    - uris: /v1/playlists/{id}/items
       method: DELETE
       authorities: playlist:edit
-    - uris: /v1/catalog/playlists/{id}/permissions/grant
+    - uris: /v1/playlists/{id}/permissions/grant
       method: POST
       authorities: playlist:permission
-    - uris: /v1/catalog/playlists/{id}/permissions/revoke
+    - uris: /v1/playlists/{id}/permissions/revoke
       method: DELETE
       authorities: playlist:permission
 

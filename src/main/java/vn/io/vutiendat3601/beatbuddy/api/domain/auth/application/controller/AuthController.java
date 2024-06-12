@@ -34,7 +34,7 @@ public class AuthController {
 
   @SecurityRequirement(name = "web")
   @Operation(summary = "Get current User in detail")
-  @GetMapping("me")
+  @GetMapping(path = "me", produces = "application/json")
   public ResponseEntity<UserDetailDto> getCurrentUserDetail() {
     return userPresenter.presentUserDetail(userResource.getCurrentUserDetail());
   }

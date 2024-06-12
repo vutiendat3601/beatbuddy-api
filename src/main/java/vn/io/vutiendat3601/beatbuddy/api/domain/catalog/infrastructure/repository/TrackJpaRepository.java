@@ -19,8 +19,6 @@ public interface TrackJpaRepository extends JpaRepository<TrackPo, UUID> {
 
   Page<TrackPo> findByOrderByTotalLikesDesc(Pageable pageable);
 
-  // Page<TrackPo> findByTagsContainingIgnoreCase(String query, Pageable pageable);
-
   @Query(
       value =
           """
@@ -30,4 +28,6 @@ public interface TrackJpaRepository extends JpaRepository<TrackPo, UUID> {
       nativeQuery = true)
   Page<TrackPo> findByTagOrTsvOrderByTotalLikesDesc(
       @Param("query") String query, @Param("tsvQuery") String tsvQuery, Pageable pageable);
+
+  Optional<TrackPo> findByUrn(String urn);
 }

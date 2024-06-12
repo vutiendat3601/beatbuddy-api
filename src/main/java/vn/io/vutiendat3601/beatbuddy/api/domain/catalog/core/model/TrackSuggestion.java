@@ -5,18 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class User {
-  private String id;
-
-  private String urn;
-
-  private String firstName;
-
-  private String lastName;
-
-  private String picture;
+@AllArgsConstructor
+@Data
+public class TrackSuggestion {
+  private String pkId;
 }

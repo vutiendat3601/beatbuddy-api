@@ -2,10 +2,8 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.adapter;
 
 import java.util.LinkedList;
 import java.util.Optional;
-
-import org.springframework.stereotype.Repository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Like;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.LikeRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.mapper.LikeMapper;
@@ -24,9 +22,9 @@ public class LikeJpaRespositoryAdapter implements LikeRepository {
 
   @Override
   public void save(Like like) {
-    final LikePo likePo = new LikePo(new LinkedList<>(like.urns()), like.ownerId());
-    if (like.pkId() != null) {
-      likeJpaRepo.findById(like.pkId()).ifPresent(l -> likePo.setPkId(l.getPkId()));
+    final LikePo likePo = new LikePo(new LinkedList<>(like.getUrns()), like.getOwnerId());
+    if (like.getPkId() != null) {
+      likeJpaRepo.findById(like.getPkId()).ifPresent(l -> likePo.setPkId(l.getPkId()));
     }
     likeJpaRepo.save(likePo);
   }

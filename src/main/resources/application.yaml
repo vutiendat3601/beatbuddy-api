@@ -69,7 +69,7 @@ auth:
 
 security:
   routeSpecs:
-    # Auth User
+    # Auth
     - uris: /v1/auth/users,/v1/auth/users/{id}
       method: GET
       authorities: user:view
@@ -82,7 +82,7 @@ security:
       method: GET
       authorities: catalog:search
 
-    # Catalog User
+    # User
     - uris: /v1/catalog/users,/v1/catalog/users/{id},/v1/auth/users,/v1/auth/users/{id}
       method: GET
       authorities: user:view
@@ -117,7 +117,7 @@ security:
       method: DELETE
       authorities: playlist:permission
 
-    # Catalog TrackSuggestion
+    # TrackSuggestion
     - uris: /v1/catalog/track-suggestions
       method: POST
       authorities: track-suggestion:create
@@ -131,7 +131,7 @@ security:
       method: DELETE
       authorities: track-suggestion:delete
 
-    # Audio File
+    # File
     - uris: /v1/audio/files,/v1/audio/files/{id}
       method: GET
       authorities: audio:view-file

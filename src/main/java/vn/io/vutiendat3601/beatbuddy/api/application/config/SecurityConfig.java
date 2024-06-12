@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
-
 import vn.io.vutiendat3601.beatbuddy.api.application.filter.DecodedJwtContextFilter;
 import vn.io.vutiendat3601.beatbuddy.api.application.filter.KeycloakExchangeAuthorizationTokenFilter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.ResourceManagementConfig;

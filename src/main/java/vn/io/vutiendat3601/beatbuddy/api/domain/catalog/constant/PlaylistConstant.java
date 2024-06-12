@@ -9,6 +9,7 @@ public interface PlaylistConstant {
   // Messages
   String PLAYLIST_CREATED_SUCCESS = "Playlist created successfully";
   String PLAYLIST_UPDATED_SUCCESS = "Playlist updated successfully";
+  String PLAYLIST_ADD_ITEM_SUCCESS = "Playlist added items successfully";
   String PLAYLIST_PERMISISON_GRANTED_SUCCESS = "Resource Permission granted successfully";
   String PLAYLIST_PERMISISON_REVOKED_SUCCESS = "Resource Permission revoked successfully";
   String PLAYLIST_NOT_FOUND = "Playlist not found";

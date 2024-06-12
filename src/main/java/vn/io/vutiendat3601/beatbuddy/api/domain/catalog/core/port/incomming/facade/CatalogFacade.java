@@ -35,6 +35,8 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.Artis
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.LikeRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.PlaylistRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.TrackRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.PlaylistItem;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.util.UrnUtils;
 import vn.io.vutiendat3601.beatbuddy.api.util.StringUtils;
 import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 
@@ -58,9 +60,10 @@ public class CatalogFacade implements Catalog {
     this.playlistRepo = playlistRepo;
     this.likeRepo = likeRepo;
     this.authClient = authClient;
-    this.searchableRepos = Map.of(
-        TRACK_TYPE, trackRepo,
-        ARTIST_TYPE, artistRepo);
+    this.searchableRepos =
+        Map.of(
+            TRACK_TYPE, trackRepo,
+            ARTIST_TYPE, artistRepo);
   }
 
   /* #: User */
@@ -106,6 +109,7 @@ public class CatalogFacade implements Catalog {
   public void likeTrack(String id) {
     // TODO implement like track Phat
   }
+
   /* # Track */
 
   /* #: Artist */
@@ -139,9 +143,22 @@ public class CatalogFacade implements Catalog {
 
   @Override
   public Playlist getPublicPlaylistById(String id) {
-    final Playlist playlist = playlistRepo
-        .findByIdAndIsPublicTrue(id)
-        .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
+    final Playlist playlist =
+        playlistRepo
+            .findByIdAndIsPublicTrue(id)
+            .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
+    findPlaylistItem(playlist.getItemUrns(), playlist.getItems());
+    final ResponseEntity<UserResponse> httpResp = authClient.getUser(playlist.getOwnerId());
+    if (httpResp.getStatusCode().is2xxSuccessful()) {
+      final UserResponse userResp = httpResp.getBody();
+      playlist.setOwner(
+          new User(
+              userResp.getId(),
+              userResp.getUrn(),
+              userResp.getFirstName(),
+              userResp.getLastName(),
+              userResp.getPicture()));
+    }
     return playlist;
   }
 
@@ -152,12 +169,18 @@ public class CatalogFacade implements Catalog {
   }
 
   @Override
-  public void addTrackToPlaylist(String id, List<String> trackIds) {
-    final Playlist playlist = playlistRepo
-        .findById(id)
-        .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
-    playlist.addItemUrnsAtHead(trackIds);
+  public void addItemToPlaylist(String id, List<String> itemUrns) {
+    final Playlist playlist =
+        playlistRepo
+            .findById(id)
+            .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
+    playlist.addItemUrnsAtHead(itemUrns);
     playlistRepo.save(playlist);
+  }
+
+  @Override
+  public Pagination<Playlist> getPopularPlaylists(int page, int size) {
+    return playlistRepo.findByOrderByTotalLikesDesc(page, size);
   }
 
   /* # Playlist */
@@ -170,8 +193,9 @@ public class CatalogFacade implements Catalog {
     final Set<Pagination<?>> results = new LinkedHashSet<>();
     types.stream()
         .forEach(
-            type -> Optional.ofNullable(searchableRepos.get(type))
-                .ifPresent(repo -> results.add(repo.findBySearchRequest(searchReq))));
+            type ->
+                Optional.ofNullable(searchableRepos.get(type))
+                    .ifPresent(repo -> results.add(repo.findBySearchRequest(searchReq))));
     return results;
   }
 
@@ -187,5 +211,45 @@ public class CatalogFacade implements Catalog {
               return like;
             });
   }
+
   /* # Catalog */
+
+  private void findPlaylistItem(List<String> itemUrns, List<PlaylistItem> items) {
+    for (String itemUrn : itemUrns) {
+      final String type = UrnUtils.identifyType(itemUrn);
+      if (type.equals(TRACK_TYPE)) {
+        trackRepo
+            .findByUrn(itemUrn)
+            .ifPresent(
+                (track) -> {
+                  final PlaylistItem playlistItem =
+                      PlaylistItem.builder()
+                          .id(track.getId())
+                          .urn(track.getUrn())
+                          .name(track.getName())
+                          .durationSec(track.getDurationSec())
+                          .description(track.getDescription())
+                          .releasedDate(track.getReleasedDate())
+                          .thumbnail(track.getThumbnail())
+                          .isPublic(track.getIsPublic())
+                          .isPlayable(track.getIsPlayable())
+                          .build();
+                  for (Artist artist : track.getArtists()) {
+                    playlistItem
+                        .getArtists()
+                        .add(
+                            new PlaylistItem.Artist(
+                                artist.getId(),
+                                artist.getUrn(),
+                                artist.getName(),
+                                artist.getIsPublic(),
+                                artist.getIsVerified(),
+                                artist.getDescription(),
+                                artist.getThumbnail()));
+                  }
+                  items.add(playlistItem);
+                });
+      }
+    }
+  }
 }

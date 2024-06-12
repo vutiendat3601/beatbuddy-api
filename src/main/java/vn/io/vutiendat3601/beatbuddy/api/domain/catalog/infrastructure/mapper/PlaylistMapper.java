@@ -1,5 +1,6 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.mapper;
 
+import java.util.LinkedList;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Playlist;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.model.PlaylistPo;
 
@@ -15,7 +16,9 @@ public interface PlaylistMapper {
         playlistPo.getIsPublic(),
         playlistPo.getTotalLikes(),
         playlistPo.getOwnerId(),
+        null,
         playlistPo.getIsDeleted(),
-        playlistPo.getItemUrns());
+        new LinkedList<>(playlistPo.getItemUrns()),
+        new LinkedList<>());
   }
 }

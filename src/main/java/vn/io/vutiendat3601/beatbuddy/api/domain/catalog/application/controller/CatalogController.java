@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.ArtistDto;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.SearchDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.TrackDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
@@ -40,7 +41,7 @@ public class CatalogController {
       @Range(min = 1, max = 50, message = "size must be in range [1, 50]")
           @RequestParam(required = false, defaultValue = "10")
           Integer size) {
-    return catalogPresenter.presentArtistPage(catalog.getPopularArtists(page - 1, size));
+    return catalogPresenter.presentArtistDtoPage(catalog.getPopularArtists(page - 1, size));
   }
 
   @Operation(summary = "Get Popular Artists", description = "Get popular Artists")
@@ -52,7 +53,19 @@ public class CatalogController {
       @Range(min = 1, max = 50, message = "size must be in range [1, 50]")
           @RequestParam(required = false, defaultValue = "10")
           Integer size) {
-    return catalogPresenter.presentTrackPage(catalog.getPopularTracks(page - 1, size));
+    return catalogPresenter.presentTrackDtoPage(catalog.getPopularTracks(page - 1, size));
+  }
+
+  @Operation(summary = "Get Popular Playlists", description = "Get popular Playlists")
+  @GetMapping("feed/popular-playlists")
+  public ResponseEntity<Pagination<PlaylistDto>> getPopularPlaylists(
+      @Min(value = 1, message = "page must be greater than or equal to 1")
+          @RequestParam(required = false, defaultValue = "1")
+          Integer page,
+      @Range(min = 1, max = 50, message = "size must be in range [1, 50]")
+          @RequestParam(required = false, defaultValue = "10")
+          Integer size) {
+    return catalogPresenter.presentPlaylistDtoPage(catalog.getPopularPlaylists(page - 1, size));
   }
 
   @Operation(summary = "Search", description = "Search catalog items")
@@ -74,6 +87,6 @@ public class CatalogController {
           Integer size) {
     final Set<String> typesSet = Set.copyOf(types);
     final Set<Pagination<?>> results = catalog.search(query, typesSet, page - 1, size);
-    return catalogPresenter.presentSearch(results, typesSet, page, size);
+    return catalogPresenter.presentSearchDto(results, typesSet, page, size);
   }
 }

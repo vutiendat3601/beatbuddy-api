@@ -30,6 +30,6 @@ public class UserController {
   public ResponseEntity<UserDto> getUser(
       @Length(min = USER_ID_LENGTH, max = USER_ID_LENGTH, message = "Wrong id format") @PathVariable
           String id) {
-    return catalogPresenter.presentUser(catalog.getUserById(id));
+    return catalogPresenter.presentUserDto(catalog.getUserById(id));
   }
 }

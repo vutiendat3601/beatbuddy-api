@@ -69,21 +69,4 @@ public class PlaylistPo extends AuditPo {
     this.isDeleted = isDeleted;
     this.itemUrns = itemUrns;
   }
-
-  // public PlaylistPo(
-  //     String id,
-  //     String urn,
-  //     String name,
-  //     String thumbnail,
-  //     String description,
-  //     String ownerId,
-  //     Boolean isPublic) {
-  //   this.id = id;
-  //   this.urn = urn;
-  //   this.name = name;
-  //   this.thumbnail = thumbnail;
-  //   this.description = description;
-  //   this.ownerId = ownerId;
-  //   this.isPublic = isPublic;
-  // }
 }

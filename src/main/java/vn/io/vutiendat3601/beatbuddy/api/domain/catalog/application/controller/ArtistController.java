@@ -44,7 +44,7 @@ public class ArtistController {
       @Range(min = 1, max = 50, message = "size must be in range [1, 50]")
           @RequestParam(required = false, defaultValue = "10")
           Integer size) {
-    return catalogPresenter.presentTrackPage(catalog.getArtistPopularTracks(id, page - 1, size));
+    return catalogPresenter.presentTrackDtoPage(catalog.getArtistPopularTracks(id, page - 1, size));
   }
 
   @Tag(name = "Artist")
@@ -54,7 +54,7 @@ public class ArtistController {
       @Length(min = ARTIST_ID_LENGTH, max = ARTIST_ID_LENGTH, message = "Wrong id format")
           @PathVariable
           String id) {
-    return catalogPresenter.presentArtist(catalog.getArtistById(id));
+    return catalogPresenter.presentArtistDto(catalog.getArtistById(id));
   }
 
   @Tag(name = "Artist")
@@ -69,6 +69,6 @@ public class ArtistController {
                       message = "Wrong id format")
                   String>
               ids) {
-    return catalogPresenter.presentArtists(catalog.getArtistByIds(ids));
+    return catalogPresenter.presentArtistDtos(catalog.getArtistByIds(ids));
   }
 }

@@ -7,12 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
 import vn.io.vutiendat3601.beatbuddy.api.common.dto.ResponseDto;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.ArtistMapper;
@@ -22,6 +20,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.Track
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.mapper.UserMapper;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.ArtistDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.LikeDto;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDetailDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.SearchDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.TrackDto;
@@ -36,14 +35,14 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.User;
 @RequiredArgsConstructor
 public class CatalogPresenter {
   /* #: Common */
-  public ResponseEntity<ResponseDto> presentResponseOk(String message) {
+  public ResponseEntity<ResponseDto> presentResponseDtoOk(String message) {
     return ResponseEntity.ok(new ResponseDto(message, HttpStatus.OK));
   }
 
   /* # Common */
 
   /* #: Catalog */
-  public ResponseEntity<SearchDto> presentSearch(
+  public ResponseEntity<SearchDto> presentSearchDto(
       Set<Pagination<?>> results, Set<String> types, Integer page, Integer size) {
     final Map<String, Pagination<?>> resultsMap = new HashMap<>();
     results.forEach(
@@ -65,29 +64,30 @@ public class CatalogPresenter {
     return ResponseEntity.ok(new SearchDto(resultsMap, types, page, size));
   }
 
-  public ResponseEntity<LikeDto> presentLike(Like like) {
+  public ResponseEntity<LikeDto> presentLikeDto(Like like) {
     return ResponseEntity.ok(LikeMapper.mapToLikeDto(like));
   }
+
   /* # Catalog */
 
   /* #: User */
-  public ResponseEntity<UserDto> presentUser(User user) {
+  public ResponseEntity<UserDto> presentUserDto(User user) {
     return ResponseEntity.ok(UserMapper.mapToUserDto(user));
   }
 
   /* # User */
   /* #: Track */
-  public ResponseEntity<TrackDto> presentTrack(Track track) {
+  public ResponseEntity<TrackDto> presentTrackDto(Track track) {
     final TrackDto trackDto = TrackMapper.mapToTrackDto(track);
     return ResponseEntity.ok(trackDto);
   }
 
-  public ResponseEntity<List<TrackDto>> presentTracks(List<Track> tracks) {
+  public ResponseEntity<List<TrackDto>> presentTrackDtos(List<Track> tracks) {
     final List<TrackDto> trackDtos = tracks.stream().map(TrackMapper::mapToTrackDto).toList();
     return ResponseEntity.ok(trackDtos);
   }
 
-  public ResponseEntity<Pagination<TrackDto>> presentTrackPage(Pagination<Track> trackPage) {
+  public ResponseEntity<Pagination<TrackDto>> presentTrackDtoPage(Pagination<Track> trackPage) {
     Pagination<TrackDto> trackDtoPage = trackPage.map(TrackMapper::mapToTrackDto);
     return ResponseEntity.ok(trackDtoPage);
   }
@@ -95,17 +95,17 @@ public class CatalogPresenter {
   /* # Track */
 
   /* #: Artist */
-  public ResponseEntity<ArtistDto> presentArtist(Artist artist) {
+  public ResponseEntity<ArtistDto> presentArtistDto(Artist artist) {
     ArtistDto artistDto = ArtistMapper.mapToArtistDto(artist);
     return ResponseEntity.ok(artistDto);
   }
 
-  public ResponseEntity<List<ArtistDto>> presentArtists(List<Artist> artists) {
+  public ResponseEntity<List<ArtistDto>> presentArtistDtos(List<Artist> artists) {
     List<ArtistDto> artistDtos = artists.stream().map(ArtistMapper::mapToArtistDto).toList();
     return ResponseEntity.ok(artistDtos);
   }
 
-  public ResponseEntity<Pagination<ArtistDto>> presentArtistPage(Pagination<Artist> artistPage) {
+  public ResponseEntity<Pagination<ArtistDto>> presentArtistDtoPage(Pagination<Artist> artistPage) {
     Pagination<ArtistDto> artistDtoPage = artistPage.map(ArtistMapper::mapToArtistDto);
     return ResponseEntity.ok(artistDtoPage);
   }
@@ -113,12 +113,17 @@ public class CatalogPresenter {
   /* # Artist */
 
   /* #: Playlist */
-  public ResponseEntity<PlaylistDto> presentPlaylist(Playlist playlist) {
-    PlaylistDto playlistDto = PlaylistMapper.mapToPlaylistDto(playlist);
+  public ResponseEntity<PlaylistDto> presentPlaylistDto(Playlist playlist) {
+    final PlaylistDto playlistDto = PlaylistMapper.mapToPlaylistDto(playlist);
     return ResponseEntity.ok(playlistDto);
   }
 
-  public ResponseEntity<Pagination<PlaylistDto>> presentPlaylistPage(
+  public ResponseEntity<PlaylistDetailDto> presentPlaylistDetailDto(Playlist playlist) {
+    final PlaylistDetailDto playlistDetailDto = PlaylistMapper.mapToPlaylistDetailDto(playlist);
+    return ResponseEntity.ok(playlistDetailDto);
+  }
+
+  public ResponseEntity<Pagination<PlaylistDto>> presentPlaylistDtoPage(
       Pagination<Playlist> playlistPage) {
     Pagination<PlaylistDto> playlistDtosPage = playlistPage.map(PlaylistMapper::mapToPlaylistDto);
     return ResponseEntity.ok(playlistDtosPage);

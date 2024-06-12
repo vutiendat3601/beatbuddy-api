@@ -2,19 +2,39 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public record Artist(
-    UUID pkId,
-    String id,
-    String urn,
-    String name,
-    Boolean isVerified,
-    Boolean isPublic,
-    LocalDate birthDate,
-    String description,
-    String nationality,
-    String biography,
-    String thumbnail,
-    String background,
-    String tags,
-    Long totalLikes) {}
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class Artist {
+  private UUID pkId;
+
+  private String id;
+
+  private String urn;
+
+  private String name;
+
+  private Boolean isVerified;
+
+  private Boolean isPublic;
+
+  private LocalDate birthDate;
+
+  private String description;
+
+  private String nationality;
+
+  private String biography;
+
+  private String thumbnail;
+
+  private String background;
+
+  private String tags;
+
+  private Long totalLikes;
+}

@@ -1,22 +1,17 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model;
+package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class Track {
-  private UUID pkId;
-
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
+public class PlaylistItem {
   private String id;
 
   private String urn;
@@ -34,12 +29,24 @@ public class Track {
   private Boolean isPublic;
 
   private Boolean isPlayable;
-
-  private Long totalLikes;
-
-  @Builder.Default private Set<String> audioFileIds = new HashSet<>();
-
-  private String tags;
-
   @Builder.Default private List<Artist> artists = new LinkedList<>();
+
+  @NoArgsConstructor
+  @Data
+  @AllArgsConstructor
+  public static class Artist {
+    private String id;
+
+    private String urn;
+
+    private String name;
+
+    private Boolean isPublic;
+
+    private Boolean isVerified;
+
+    private String description;
+
+    private String thumbnail;
+  }
 }

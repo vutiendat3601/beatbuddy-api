@@ -13,4 +13,6 @@ public interface PlaylistJpaRepository extends JpaRepository<PlaylistPo, UUID> {
   Page<PlaylistPo> findAllByOwnerId(String ownerId, Pageable pageable);
 
   Optional<PlaylistPo> findByIdAndIsPublicTrue(String id);
+
+  Page<PlaylistPo> findByOrderByTotalLikesDesc(Pageable pageable);
 }

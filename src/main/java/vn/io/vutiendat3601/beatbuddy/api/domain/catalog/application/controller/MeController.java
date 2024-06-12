@@ -37,13 +37,13 @@ public class MeController {
       @Range(min = 1, max = 50, message = "size must be in range [1, 50]")
           @RequestParam(required = false, defaultValue = "10")
           Integer size) {
-    return catalogPresenter.presentPlaylistPage(catalog.getUserPlaylists(page - 1, size));
+    return catalogPresenter.presentPlaylistDtoPage(catalog.getUserPlaylists(page - 1, size));
   }
 
   @Tag(name = "Catalog")
   @Operation(summary = "Get User Like Detail", description = "Get current User's Like in detail")
   @GetMapping("like")
   public ResponseEntity<LikeDto> getCurrentUserLikeDetail() {
-    return catalogPresenter.presentLike(catalog.getCurrentUserLikeDetail());
+    return catalogPresenter.presentLikeDto(catalog.getCurrentUserLikeDetail());
   }
 }

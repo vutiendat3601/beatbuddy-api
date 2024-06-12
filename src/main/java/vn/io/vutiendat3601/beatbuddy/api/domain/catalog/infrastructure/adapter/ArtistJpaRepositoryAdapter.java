@@ -2,13 +2,11 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.adapter;
 
 import java.util.List;
 import java.util.Optional;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.SearchRequest;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Artist;
@@ -32,9 +30,9 @@ public class ArtistJpaRepositoryAdapter implements ArtistRepository {
 
   @Override
   public Pagination<Artist> findByOrderByTotalLikesDesc(int page, Integer size) {
-    Page<ArtistPo> artistPoPage =
+    final Page<ArtistPo> artistPoPage =
         artistJpaRepo.findByOrderByTotalLikesDesc(PageRequest.of(page, size));
-    Page<Artist> artistPage = artistPoPage.map(ArtistMapper::mapToArtist);
+    final Page<Artist> artistPage = artistPoPage.map(ArtistMapper::mapToArtist);
     return Pagination.of(artistPage);
   }
 

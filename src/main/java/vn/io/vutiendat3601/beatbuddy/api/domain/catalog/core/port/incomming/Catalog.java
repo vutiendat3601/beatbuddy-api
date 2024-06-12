@@ -28,13 +28,15 @@ public interface Catalog {
 
   Pagination<Track> getPopularTracks(int page, int size);
 
+  Pagination<Playlist> getPopularPlaylists(int page, int size);
+
   Set<Pagination<?>> search(String query, Set<String> types, int page, int size);
 
   User getUserById(String id);
 
   Pagination<Playlist> getUserPlaylists(int page, int size);
 
-  void addTrackToPlaylist(String id, List<String> trackIds);
+  void addItemToPlaylist(String id, List<String> trackIds);
 
   Like getCurrentUserLikeDetail();
 

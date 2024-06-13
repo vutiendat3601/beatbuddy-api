@@ -1,24 +1,24 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.facade;
 
+import static vn.io.vutiendat3601.beatbuddy.api.domain.auth.constant.ResourceConstant.RESOURCE_NOT_FOUND;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.auth.constant.UserConstant.USER_NOT_FOUND;
 
-import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.AuthResourceConfig;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.exception.UserNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.Resource;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthResource;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.AuthUserRepository;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource.ResourceType;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource.ScopePermission;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ResourceType;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ResourceUser;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ScopePermission;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthResourceUtil;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.exception.ResourceNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.AuthResourceRepository;
 import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 
@@ -43,28 +43,47 @@ public class AuthResourceFacade implements AuthResource {
 
   @Override
   public void createResource(String urn, String name) {
-    if (!authResourceUtil.isResourceUrn(urn)) {
-      throw new IllegalArgumentException("Invalid Resource URN: " + urn);
-    }
     final String type = authResourceUtil.getResourceType(urn);
     final String id = authResourceUtil.getResourceId(urn);
     if (resourceTypes.containsKey(type)) {
-      final User owner =
+      final User user =
           userRepo
               .findById(UserContext.getUserId())
               .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+      final ResourceUser owner =
+          ResourceUser.builder()
+              .id(user.getId())
+              .firstName(user.getFirstName())
+              .lastName(user.getLastName())
+              .picture(user.getPicture())
+              .build();
+
       final ResourceType resourceType = resourceTypes.get(type);
-      final Set<URI> uris =
+      final Set<String> uris =
           resourceType.getUriPrefixes().stream()
-              .map(prefix -> UriComponentsBuilder.fromPath(prefix).buildAndExpand(id).toUri())
+              .map(prefix -> UriComponentsBuilder.fromPath(prefix).buildAndExpand(id).toString())
               .collect(Collectors.toSet());
       final Set<ScopePermission> permissions =
           resourceType.getOwnerScopes().stream()
-              .map(scope -> new ScopePermission(owner.urn(), scope, true))
+              .map(s -> new ScopePermission(s, true, owner))
               .collect(Collectors.toSet());
       final Resource resource =
-          new Resource(urn, name, type, owner, uris, resourceType.getOwnerScopes(), permissions);
-      resourceRepo.create(resource);
+          Resource.builder()
+              .urn(urn)
+              .name(name)
+              .type(type)
+              .owner(owner)
+              .uris(uris)
+              .scopes(resourceType.getOwnerScopes())
+              .scopePermissions(permissions)
+              .build();
+      resourceRepo.save(resource);
     }
+  }
+
+  public Resource getResource(String urn) {
+    return resourceRepo
+        .findByUrn(urn)
+        .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NOT_FOUND));
   }
 }

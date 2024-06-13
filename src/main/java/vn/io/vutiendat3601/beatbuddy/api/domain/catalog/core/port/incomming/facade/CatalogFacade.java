@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import vn.io.vutiendat3601.beatbuddy.api.client.auth.AuthClient;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.ResourceResponse;
 import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserResponse;
 import vn.io.vutiendat3601.beatbuddy.api.common.repository.SearchableRepository;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
@@ -36,6 +38,8 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.LikeR
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.PlaylistRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.TrackRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.PlaylistItem;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.ResourceUser;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.ScopePermission;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.util.UrnUtils;
 import vn.io.vutiendat3601.beatbuddy.api.util.StringUtils;
 import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
@@ -137,7 +141,16 @@ public class CatalogFacade implements Catalog {
     final String urn = PLAYLIST_URN_PREFIX + ":" + id;
     authClient.createResource(urn, name);
     final String ownerId = UserContext.getUserId();
-    final Playlist playlist = new Playlist(id, name, ownerId);
+    final Playlist playlist =
+        Playlist.builder()
+            .id(id)
+            .urn(urn)
+            .name(name)
+            .thumbnail(thumbnail)
+            .description(description)
+            .isPublic(isPublic)
+            .ownerId(ownerId)
+            .build();
     playlistRepo.save(playlist);
   }
 
@@ -147,18 +160,42 @@ public class CatalogFacade implements Catalog {
         playlistRepo
             .findByIdAndIsPublicTrue(id)
             .orElseThrow(() -> new PlaylistNotFoundException(PLAYLIST_NOT_FOUND));
-    findPlaylistItem(playlist.getItemUrns(), playlist.getItems());
-    final ResponseEntity<UserResponse> httpResp = authClient.getUser(playlist.getOwnerId());
+    getPlaylistItem(playlist.getItemUrns(), playlist.getItems());
+    final ResponseEntity<ResourceResponse> httpResp = authClient.getResource(playlist.getUrn());
     if (httpResp.getStatusCode().is2xxSuccessful()) {
-      final UserResponse userResp = httpResp.getBody();
-      playlist.setOwner(
-          new User(
-              userResp.getId(),
-              userResp.getUrn(),
-              userResp.getFirstName(),
-              userResp.getLastName(),
-              userResp.getPicture()));
+      final ResourceResponse resourceResp = httpResp.getBody();
+      final ResourceUser owner =
+          ResourceUser.builder()
+              .id(resourceResp.getOwner().getId())
+              .urn(resourceResp.getOwner().getUrn())
+              .firstName(resourceResp.getOwner().getFirstName())
+              .lastName(resourceResp.getOwner().getLastName())
+              .picture(resourceResp.getOwner().getPicture())
+              .build();
+
+      final Set<ScopePermission> scopePermissions =
+          resourceResp.getScopePermissions().stream()
+              .map(
+                  s -> {
+                    final ResourceUser user =
+                        ResourceUser.builder()
+                            .id(s.getUser().getId())
+                            .urn(s.getUser().getUrn())
+                            .firstName(s.getUser().getFirstName())
+                            .lastName(s.getUser().getLastName())
+                            .picture(s.getUser().getPicture())
+                            .build();
+                    return ScopePermission.builder()
+                        .isGranted(s.getIsGranted())
+                        .scope(s.getScope())
+                        .user(user)
+                        .build();
+                  })
+              .collect(Collectors.toSet());
+      playlist.setOwner(owner);
+      playlist.setScopePermissions(scopePermissions);
     }
+
     return playlist;
   }
 
@@ -214,7 +251,7 @@ public class CatalogFacade implements Catalog {
 
   /* # Catalog */
 
-  private void findPlaylistItem(List<String> itemUrns, List<PlaylistItem> items) {
+  private void getPlaylistItem(List<String> itemUrns, List<PlaylistItem> items) {
     for (String itemUrn : itemUrns) {
       final String type = UrnUtils.identifyType(itemUrn);
       if (type.equals(TRACK_TYPE)) {

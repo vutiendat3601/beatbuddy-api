@@ -2,12 +2,15 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.PlaylistItem;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.ResourceUser;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type.ScopePermission;
 
 @NoArgsConstructor
 @Data
@@ -26,25 +29,21 @@ public class Playlist {
 
   private String description;
 
-  private Boolean isPublic;
+  @Builder.Default private Boolean isPublic = false;
 
-  private Long totalLikes;
+  @Builder.Default private Long totalLikes = 0L;
 
   private String ownerId;
 
-  private User owner;
+  private ResourceUser owner;
 
-  private Boolean isDeleted;
+  private Set<ScopePermission> scopePermissions;
+
+  @Builder.Default private Boolean isDeleted = false;
 
   @Builder.Default private List<String> itemUrns = new LinkedList<>();
 
   @Builder.Default private List<PlaylistItem> items = new LinkedList<>();
-
-  public Playlist(String id, String name, String ownerId) {
-    this.id = id;
-    this.name = name;
-    this.ownerId = ownerId;
-  }
 
   public Playlist(UUID pkId) {
     this.pkId = pkId;

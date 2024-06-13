@@ -29,7 +29,9 @@ public interface PlaylistMapper {
         .isPublic(playlist.getIsPublic())
         .totalLikes(playlist.getTotalLikes())
         .items(playlist.getItems())
-        .owner(UserMapper.mapToUserDto(playlist.getOwner()))
+        .owner(playlist.getOwner())
+        .scopePermissions(playlist.getScopePermissions())
+        .items(playlist.getItems())
         .build();
   }
 }

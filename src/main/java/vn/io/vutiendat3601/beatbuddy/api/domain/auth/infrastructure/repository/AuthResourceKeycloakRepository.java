@@ -7,22 +7,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.authorization.client.AuthzClient;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.keycloak.representations.idm.authorization.PermissionTicketRepresentation;
 import org.keycloak.representations.idm.authorization.ResourceRepresentation;
 import org.keycloak.representations.idm.authorization.ScopeRepresentation;
-import org.springframework.stereotype.Repository;
-
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.ResourceManagementConfig;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.UserManagementConfig;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.model.ResourcePo;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.model.ScopePermissionPo;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthResourceUtils;
 
-@Repository
+// @Repository
 public class AuthResourceKeycloakRepository {
   private final String realm;
   private final Keycloak keycloak;
@@ -70,7 +67,7 @@ public class AuthResourceKeycloakRepository {
     return resourcePos;
   }
 
-  public void create(ResourcePo resourcePo) {
+  public void save(ResourcePo resourcePo) {
     // Create resource
     ResourceRepresentation resourceRep =
         authzClient.protection().resource().create(resourcePo.getResourceRepresentation());
@@ -102,7 +99,7 @@ public class AuthResourceKeycloakRepository {
       authzClient.protection().resource().update(resourceRep);
 
       final Map<String, ScopeRepresentation> resourceScopesMap =
-          AuthResourceUtils.getScopeMap(resourceRep);
+          AuthResourceUtils.getScopesMap(resourceRep);
 
       // // Save permissions
       final String resourceId = resourceRep.getId();

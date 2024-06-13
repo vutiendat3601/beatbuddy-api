@@ -1,16 +1,18 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource;
+package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.type;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScopePermission {
-  private String userId;
-
   private String scope;
 
-  private boolean isGranted;
+  @Builder.Default private Boolean isGranted = false;
+
+  private ResourceUser user;
 }

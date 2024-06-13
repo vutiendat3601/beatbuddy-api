@@ -1,4 +1,4 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource;
+package vn.io.vutiendat3601.beatbuddy.api.domain.auth.type;
 
 import java.util.Set;
 import lombok.Data;

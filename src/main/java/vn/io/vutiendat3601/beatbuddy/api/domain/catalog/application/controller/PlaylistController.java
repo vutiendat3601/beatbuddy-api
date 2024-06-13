@@ -1,7 +1,8 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.controller;
 
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ADD_ITEM_SUCCESS;
-import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_CREATED_SUCCESS;
+import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_CREATE_PERMISSION_REQUEST_SUCCESS;
+import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_CREATE_SUCCESS;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ID_LENGTH;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPrese
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDetailDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
 
+@Tag(name = "Playlist")
 @SecurityRequirement(name = "web")
 @RequiredArgsConstructor
 @RequestMapping("v1/playlists")
@@ -36,7 +38,6 @@ public class PlaylistController {
   private final Catalog catalog;
   private final CatalogPresenter catalogPresenter;
 
-  @Tag(name = "Playlist")
   @Operation(
       summary = "Create Playlist",
       description = "Create a new Playlist",
@@ -50,10 +51,9 @@ public class PlaylistController {
       String thumbnail,
       String description) {
     catalog.createPlaylist(name, isPublic, thumbnail, description);
-    return catalogPresenter.presentResponseDtoOk(PLAYLIST_CREATED_SUCCESS);
+    return catalogPresenter.presentResponseDtoOk(PLAYLIST_CREATE_SUCCESS);
   }
 
-  @Tag(name = "Playlist")
   @Operation(summary = "Add Items to Playlist", description = "Add Items to Playlist")
   @PutMapping(path = "{id}/add-item", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<ResponseDto> addTrackToPlaylist(
@@ -65,7 +65,6 @@ public class PlaylistController {
     return catalogPresenter.presentResponseDtoOk(PLAYLIST_ADD_ITEM_SUCCESS);
   }
 
-  @Tag(name = "Playlist")
   @Operation(summary = "Get Playlist", description = "Get a Playlist in detail by id")
   @GetMapping(path = "{id}")
   public ResponseEntity<PlaylistDetailDto> getPlaylistDetail(
@@ -73,5 +72,13 @@ public class PlaylistController {
           @PathVariable
           String id) {
     return catalogPresenter.presentPlaylistDetailDto(catalog.getPublicPlaylistById(id));
+  }
+
+  @Operation(
+      summary = "Create Playlist Permission Request",
+      description = "Create Playlist Permission request")
+  @PostMapping(path = "{id}/permissions/request")
+  public ResponseEntity<ResponseDto> createPermissionRequest(@PathVariable String id) {
+    return catalogPresenter.presentResponseDtoOk(PLAYLIST_CREATE_PERMISSION_REQUEST_SUCCESS);
   }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import vn.io.vutiendat3601.beatbuddy.api.client.auth.AuthClient;
+import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.ResourceResponse;
 import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.Response;
 import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserDetailResponse;
 import vn.io.vutiendat3601.beatbuddy.api.client.auth.model.UserResponse;
@@ -30,4 +31,8 @@ public interface AuthFeignClient extends AuthClient {
   @Override
   @PostMapping("v1/auth/resources")
   ResponseEntity<Response> createResource(@RequestParam String urn, @RequestParam String name);
+
+  @Override
+  @GetMapping("v1/auth/resources")
+  ResponseEntity<ResourceResponse> getResource(@RequestParam String urn);
 }

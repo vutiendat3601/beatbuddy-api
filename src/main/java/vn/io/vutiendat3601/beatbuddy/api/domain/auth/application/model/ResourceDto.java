@@ -1,4 +1,4 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model;
+package vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +13,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ScopePermission;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Resource {
-  private String pkId;
-
+public class ResourceDto {
   private String urn;
 
   private String name;

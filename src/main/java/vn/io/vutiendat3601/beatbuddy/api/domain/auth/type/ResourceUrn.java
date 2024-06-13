@@ -1,4 +1,4 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource;
+package vn.io.vutiendat3601.beatbuddy.api.domain.auth.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class ResourceUrn {
   private int numberOfParts;
-  
+
   private int typePartIndex;
-  
+
   private int idPartIndex;
 
   private String partSeparator;

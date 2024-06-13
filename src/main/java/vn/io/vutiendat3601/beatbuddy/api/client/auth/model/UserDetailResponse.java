@@ -4,7 +4,7 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource.IdentityProvider;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.IdentityProvider;
 
 @Data
 @NoArgsConstructor

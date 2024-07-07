@@ -19,7 +19,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.Pl
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.CatalogService;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.PlaylistService;
 
-@Tag(name = "Playlist")
+@Tag(name = "Me")
 @SecurityRequirement(name = "web")
 @RequiredArgsConstructor
 @RequestMapping("v1/me")

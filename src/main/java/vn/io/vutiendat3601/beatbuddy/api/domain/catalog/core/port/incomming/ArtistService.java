@@ -10,4 +10,8 @@ public interface ArtistService {
   List<Artist> getArtistByIds(List<String> ids);
 
   Artist getArtistById(String id);
+
+  void likeArtist(String id);
+
+  void unlikeArtist(String id);
 }

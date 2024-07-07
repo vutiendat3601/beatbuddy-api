@@ -18,8 +18,4 @@ public class Like {
   @Builder.Default private Set<String> urns = new HashSet<>();
 
   private String ownerId;
-
-  public Like(String ownerId) {
-    this.ownerId = ownerId;
-  }
 }

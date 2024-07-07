@@ -59,9 +59,23 @@ public class CatalogServiceImpl implements CatalogService {
         .findByOwnerId(ownerId)
         .orElseGet(
             () -> {
-              final Like like = new Like(ownerId);
+              final Like like = Like.builder().ownerId(ownerId).build();
               likeRepo.save(like);
               return like;
             });
+  }
+
+  @Override
+  public void addLike(String urn) {
+    final Like like = getCurrentUserLikeDetail();
+    like.getUrns().add(urn);
+    likeRepo.save(like);
+  }
+
+  @Override
+  public void removeLike(String urn) {
+    final Like like = getCurrentUserLikeDetail();
+    like.getUrns().remove(urn);
+    likeRepo.save(like);
   }
 }

@@ -91,11 +91,23 @@ security:
     - uris: /v1/tracks,/v1/tracks/{id}
       method: GET
       authorities: track:view
+    - uris: /v1/tracks/{id}/like
+      method: POST
+      authorities: track:like
+    - uris: /v1/tracks/{id}/unlike
+      method: DELETE
+      authorities: track:like
 
     # Artist
     - uris: /v1/artists,/v1/artists/{id},/v1/artists/{id}/popular-tracks
       method: GET
       authorities: artist:view
+    - uris: /v1/artists/{id}/like
+      method: POST
+      authorities: artist:like
+    - uris: /v1/artists/{id}/unlike
+      method: DELETE
+      authorities: artist:like
 
     # Playlist
     - uris: /v1/playlists

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.exception.TrackNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Track;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.CatalogService;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.TrackService;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.TrackRepository;
 
@@ -15,6 +16,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.Track
 @Service
 public class TrackServiceImpl implements TrackService {
   private final TrackRepository trackRepo;
+  private final CatalogService catalogService;
 
   @Override
   public Track getTrackById(String id) {
@@ -38,6 +40,19 @@ public class TrackServiceImpl implements TrackService {
 
   @Override
   public void likeTrack(String id) {
-    // TODO implement like track Phat
+    trackRepo
+        .findById(id)
+        .ifPresentOrElse(
+            track -> catalogService.addLike(track.getUrn()),
+            () -> new TrackNotFoundException(TRACK_NOT_FOUND));
+  }
+
+  @Override
+  public void unlikeTrack(String id) {
+    trackRepo
+        .findById(id)
+        .ifPresentOrElse(
+            track -> catalogService.removeLike(track.getUrn()),
+            () -> new TrackNotFoundException(TRACK_NOT_FOUND));
   }
 }

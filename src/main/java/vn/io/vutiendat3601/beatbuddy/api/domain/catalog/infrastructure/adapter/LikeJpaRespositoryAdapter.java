@@ -22,10 +22,17 @@ public class LikeJpaRespositoryAdapter implements LikeRepository {
 
   @Override
   public void save(Like like) {
-    final LikePo likePo = new LikePo(new LinkedList<>(like.getUrns()), like.getOwnerId());
-    if (like.getPkId() != null) {
-      likeJpaRepo.findById(like.getPkId()).ifPresent(l -> likePo.setPkId(l.getPkId()));
+    if (like.getPkId() == null) {
+      final LikePo likePo = new LikePo(new LinkedList<>(like.getUrns()), like.getOwnerId());
+      likeJpaRepo.save(likePo);
+    } else {
+      likeJpaRepo
+          .findById(like.getPkId())
+          .ifPresent(
+              likePo -> {
+                likePo.setUrns(new LinkedList<>(like.getUrns()));
+                likeJpaRepo.save(likePo);
+              });
     }
-    likeJpaRepo.save(likePo);
   }
 }

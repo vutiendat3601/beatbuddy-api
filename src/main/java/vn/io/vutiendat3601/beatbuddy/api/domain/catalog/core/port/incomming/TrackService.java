@@ -11,6 +11,8 @@ public interface TrackService {
 
   void likeTrack(String id);
 
+  void unlikeTrack(String id);
+
   Pagination<Track> getArtistPopularTracks(String id, int page, int size);
 
   Pagination<Track> getPopularTracks(int page, int size);

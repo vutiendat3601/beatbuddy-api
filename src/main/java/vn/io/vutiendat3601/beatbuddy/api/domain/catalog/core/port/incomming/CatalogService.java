@@ -8,4 +8,8 @@ public interface CatalogService {
   Set<Pagination<?>> search(String query, Set<String> types, int page, int size);
 
   Like getCurrentUserLikeDetail();
+
+  void addLike(String urn);
+
+  void removeLike(String urn);
 }

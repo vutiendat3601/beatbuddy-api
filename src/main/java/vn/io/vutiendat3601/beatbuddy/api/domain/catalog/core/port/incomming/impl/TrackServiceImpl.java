@@ -40,19 +40,15 @@ public class TrackServiceImpl implements TrackService {
 
   @Override
   public void likeTrack(String id) {
-    trackRepo
-        .findById(id)
-        .ifPresentOrElse(
-            track -> catalogService.addLike(track.getUrn()),
-            () -> new TrackNotFoundException(TRACK_NOT_FOUND));
+    final Track track =
+        trackRepo.findById(id).orElseThrow(() -> new TrackNotFoundException(TRACK_NOT_FOUND));
+    catalogService.addLike(track.getUrn());
   }
 
   @Override
   public void unlikeTrack(String id) {
-    trackRepo
-        .findById(id)
-        .ifPresentOrElse(
-            track -> catalogService.removeLike(track.getUrn()),
-            () -> new TrackNotFoundException(TRACK_NOT_FOUND));
+    final Track track =
+        trackRepo.findById(id).orElseThrow(() -> new TrackNotFoundException(TRACK_NOT_FOUND));
+    catalogService.removeLike(track.getUrn());
   }
 }

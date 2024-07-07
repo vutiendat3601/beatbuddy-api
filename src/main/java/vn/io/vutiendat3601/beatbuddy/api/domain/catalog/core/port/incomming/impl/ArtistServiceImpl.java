@@ -35,19 +35,15 @@ public class ArtistServiceImpl implements ArtistService {
 
   @Override
   public void likeArtist(String id) {
-    artistRepo
-        .findById(id)
-        .ifPresentOrElse(
-            artist -> catalogService.addLike(artist.getUrn()),
-            () -> new ArtistNotFoundException(ARTIST_NOT_FOUND));
+    final Artist artist =
+        artistRepo.findById(id).orElseThrow(() -> new ArtistNotFoundException(ARTIST_NOT_FOUND));
+    catalogService.addLike(artist.getUrn());
   }
 
   @Override
   public void unlikeArtist(String id) {
-    artistRepo
-        .findById(id)
-        .ifPresentOrElse(
-            artist -> catalogService.removeLike(artist.getUrn()),
-            () -> new ArtistNotFoundException(ARTIST_NOT_FOUND));
+    final Artist artist =
+        artistRepo.findById(id).orElseThrow(() -> new ArtistNotFoundException(ARTIST_NOT_FOUND));
+    catalogService.removeLike(artist.getUrn());
   }
 }

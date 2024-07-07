@@ -26,13 +26,13 @@ public class RouteSpecificationConfig {
   private List<RouteSpecification> routeSpecs = new LinkedList<>();
 
   private final String[] GET_AUTHENTICATED_ROUTES = {
-    "/v1/auth/me", "/v1/me/playlists", "/v1/me/like", "/v1/auth/resources",
+    "/v1/auth/me", "/v1/me/playlists", "/v1/me/like", "/v1/auth/resources"
   };
   private final String[] POST_AUTHENTICATED_ROUTES = {
     "/v1/auth/resources",
   };
   private final String[] GET_PUBLIC_ROUTES = {
-    "/v1/auth/token/client-token", "/apidocs*/**", "/swagger-ui/**",
+    "/v1/auth/token/client-token", "/apidocs*/**", "/swagger-ui/**"
   };
 
   public Customizer<

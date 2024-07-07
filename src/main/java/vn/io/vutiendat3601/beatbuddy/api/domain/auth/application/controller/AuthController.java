@@ -13,7 +13,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model.TokenDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model.UserDetailDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.presenter.UserPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.WebRepresentationConfig;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthUser;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.UserService;
 
 @Tag(name = "Auth")
 @RequestMapping("v1/auth")
@@ -21,11 +21,11 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthUse
 public class AuthController {
   private final AuthzClient webRepresentationClient;
   private final UserPresenter userPresenter;
-  private final AuthUser userResource;
+  private final UserService userResource;
 
   public AuthController(
       UserPresenter userPresenter,
-      AuthUser userResource,
+      UserService userResource,
       WebRepresentationConfig webRepresentationConfig) {
     this.userPresenter = userPresenter;
     this.userResource = userResource;

@@ -20,17 +20,17 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.User
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.Resource;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ResourceUser;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ScopePermission;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthResourceUtils;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthUserUtils;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.AuthResourceRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.ResourceUtils;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.UserUtils;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.ResourceRepository;
 
 @Repository
-public class AuthResourceKeycloakRepositoryAdapter implements AuthResourceRepository {
+public class ResourceKeycloakRepositoryAdapter implements ResourceRepository {
   private final String realm;
   private final Keycloak keycloak;
   private final AuthzClient authzClient;
 
-  public AuthResourceKeycloakRepositoryAdapter(
+  public ResourceKeycloakRepositoryAdapter(
       ResourceManagementConfig resourceManagementConfig,
       UserManagementConfig userManagementConfig) {
     authzClient = resourceManagementConfig.createClient();
@@ -42,18 +42,18 @@ public class AuthResourceKeycloakRepositoryAdapter implements AuthResourceReposi
   public Optional<Resource> findByUrn(String urn) {
     final ResourceRepresentation resourceRep = authzClient.protection().resource().findByName(urn);
     if (resourceRep != null) {
-      final String ownerId = AuthResourceUtils.getOwnerId(resourceRep);
+      final String ownerId = ResourceUtils.getOwnerId(resourceRep);
       final List<UserRepresentation> users =
           keycloak.realm(realm).users().searchByAttributes("id:" + ownerId);
       if (!users.isEmpty()) {
         final UserRepresentation userRep = users.get(0);
         final ResourceUser owner =
             ResourceUser.builder()
-                .id(AuthUserUtils.getId(userRep))
-                .urn(AuthUserUtils.getUrn(userRep))
+                .id(UserUtils.getId(userRep))
+                .urn(UserUtils.getUrn(userRep))
                 .firstName(userRep.getFirstName())
                 .lastName(userRep.getLastName())
-                .picture(AuthUserUtils.getPicture(userRep))
+                .picture(UserUtils.getPicture(userRep))
                 .build();
         final Set<ScopePermission> scopePermissions = getScopePermissions(resourceRep);
         final Resource resource =
@@ -94,11 +94,11 @@ public class AuthResourceKeycloakRepositoryAdapter implements AuthResourceReposi
                 usersMap.put(
                     userPkId,
                     ResourceUser.builder()
-                        .id(AuthUserUtils.getId(userRep))
-                        .urn(AuthUserUtils.getUrn(userRep))
+                        .id(UserUtils.getId(userRep))
+                        .urn(UserUtils.getUrn(userRep))
                         .firstName(userRep.getFirstName())
                         .lastName(userRep.getLastName())
-                        .picture(AuthUserUtils.getPicture(userRep))
+                        .picture(UserUtils.getPicture(userRep))
                         .build());
               }
               return ScopePermission.builder()
@@ -151,7 +151,7 @@ public class AuthResourceKeycloakRepositoryAdapter implements AuthResourceReposi
                   },
                   () -> {
                     final PermissionTicketRepresentation permissionRep =
-                        AuthResourceUtils.createPermissionTicketRepresentation(scopePermission);
+                        ResourceUtils.createPermissionTicketRepresentation(scopePermission);
                     permissionRep.setResource(resourceRep.getId());
                     permissionRep.setRequester(userPkId);
                     authzClient.protection().permission().create(permissionRep);
@@ -170,9 +170,9 @@ public class AuthResourceKeycloakRepositoryAdapter implements AuthResourceReposi
       ResourceRepresentation resourceRep =
           authzClient.protection().resource().findByName(resource.getUrn());
       if (resourceRep == null) {
-        resourceRep = AuthResourceUtils.createResourceRepresentation(resource);
+        resourceRep = ResourceUtils.createResourceRepresentation(resource);
         resourceRep.setAttributes(
-            Map.of(RESOURCE_OWNER_ID_ATTRIBUTE, List.of(AuthUserUtils.getId(owner))));
+            Map.of(RESOURCE_OWNER_ID_ATTRIBUTE, List.of(UserUtils.getId(owner))));
         resourceRep = authzClient.protection().resource().create(resourceRep);
       } else {
         resourceRep.setDisplayName(resource.getName());

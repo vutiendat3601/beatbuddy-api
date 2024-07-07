@@ -1,10 +1,9 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming;
 
 import java.util.List;
-
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
 
-public interface AuthUser {
+public interface UserService {
   User getCurrentUserDetail();
 
   User getUserById(String id);

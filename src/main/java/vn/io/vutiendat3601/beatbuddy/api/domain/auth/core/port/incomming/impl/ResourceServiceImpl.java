@@ -1,4 +1,4 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.facade;
+package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.impl;
 
 import static vn.io.vutiendat3601.beatbuddy.api.domain.auth.constant.ResourceConstant.RESOURCE_NOT_FOUND;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.auth.constant.UserConstant.USER_NOT_FOUND;
@@ -12,26 +12,26 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.AuthResourceConfig;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.exception.UserNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.Resource;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthResource;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.AuthUserRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.ResourceService;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.UserRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ResourceType;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ResourceUser;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ScopePermission;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthResourceUtil;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.exception.ResourceNotFoundException;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.AuthResourceRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.outgoing.ResourceRepository;
 import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 
 @Service
-public class AuthResourceFacade implements AuthResource {
-  private final AuthResourceRepository resourceRepo;
-  private final AuthUserRepository userRepo;
+public class ResourceServiceImpl implements ResourceService {
+  private final ResourceRepository resourceRepo;
+  private final UserRepository userRepo;
   private final AuthResourceUtil authResourceUtil;
   private final Map<String, ResourceType> resourceTypes;
 
-  public AuthResourceFacade(
-      AuthResourceRepository resourceRepo,
-      AuthUserRepository userRepo,
+  public ResourceServiceImpl(
+      ResourceRepository resourceRepo,
+      UserRepository userRepo,
       AuthResourceConfig authResourceConfig) {
     this.resourceRepo = resourceRepo;
     this.userRepo = userRepo;

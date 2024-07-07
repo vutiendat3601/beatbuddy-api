@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.UserDto;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.UserPresenter;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.UserService;
 
+@Tag(name = "User")
 @SecurityRequirement(name = "web")
 @RequiredArgsConstructor
 @RequestMapping("v1/users")
 @RestController
 public class UserController {
-  private final Catalog catalog;
-  private final CatalogPresenter catalogPresenter;
+  private final UserService userService;
+  private final UserPresenter userPresenter;
 
-  @Tag(name = "User")
   @Operation(summary = "Get User", description = "Get a User by id")
   @GetMapping(path = "{id}")
   public ResponseEntity<UserDto> getUser(
       @Length(min = USER_ID_LENGTH, max = USER_ID_LENGTH, message = "Wrong id format") @PathVariable
           String id) {
-    return catalogPresenter.presentUserDto(catalog.getUserById(id));
+    return userPresenter.presentUserDto(userService.getUserById(id));
   }
 }

@@ -12,7 +12,7 @@ import org.keycloak.representations.idm.authorization.ScopeRepresentation;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.Resource;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ScopePermission;
 
-public interface AuthResourceUtils {
+public interface ResourceUtils {
   static String getOwnerId(ResourceRepresentation resourceRep) {
     final Map<String, List<String>> attrs = resourceRep.getAttributes();
     if (attrs.containsKey(RESOURCE_OWNER_ID_ATTRIBUTE)) {

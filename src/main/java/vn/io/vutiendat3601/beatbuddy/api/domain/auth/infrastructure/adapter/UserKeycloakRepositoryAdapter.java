@@ -3,18 +3,16 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.adapter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Repository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.AuthUserRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.UserRepository;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.mapper.UserMapper;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.repository.AuthUserKeycloakRepository;
 
 @RequiredArgsConstructor
 @Repository
-public class AuthUserKeycloakRepositoryAdapter implements AuthUserRepository {
+public class UserKeycloakRepositoryAdapter implements UserRepository {
   private final AuthUserKeycloakRepository userResourceKeycloakRepo;
 
   @Override

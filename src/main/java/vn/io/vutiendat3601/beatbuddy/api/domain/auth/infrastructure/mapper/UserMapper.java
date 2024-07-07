@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import org.keycloak.representations.idm.UserRepresentation;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.IdentityProvider;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthUserUtils;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.UserUtils;
 
 public interface UserMapper {
   static User mapToUser(UserRepresentation userRep) {
-    final String id = AuthUserUtils.getId(userRep);
-    final String urn = AuthUserUtils.getUrn(userRep);
-    final String picture = AuthUserUtils.getPicture(userRep);
+    final String id = UserUtils.getId(userRep);
+    final String urn = UserUtils.getUrn(userRep);
+    final String picture = UserUtils.getPicture(userRep);
     final Set<IdentityProvider> linkedIdentityProviders =
         Optional.ofNullable(userRep.getFederatedIdentities()).orElse(List.of()).stream()
             .map(

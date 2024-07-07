@@ -17,7 +17,7 @@ import vn.io.vutiendat3601.beatbuddy.api.common.dto.ResponseDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model.ResourceDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.presenter.ResourcePresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.Resource;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthResource;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.ResourceService;
 
 @SecurityRequirement(name = "web")
 @RequiredArgsConstructor
@@ -25,14 +25,14 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthRes
 @RequestMapping("v1/auth/resources")
 @RestController("authResourceController")
 public class ResourceController {
-  private final AuthResource authResource;
+  private final ResourceService resourceService;
   private final ResourcePresenter resourcePresenter;
 
   @Operation(description = "Create Resource", summary = "Create resource")
   @PostMapping
   public ResponseEntity<ResponseDto> createResource(
       @RequestParam String urn, @RequestParam String name) {
-    authResource.createResource(urn, name);
+    resourceService.createResource(urn, name);
     return resourcePresenter.presentResponseOk(RESOURCE_CREATED_SUCCESS);
   }
 
@@ -40,7 +40,7 @@ public class ResourceController {
   @GetMapping
   public ResponseEntity<ResourceDto> getResource(
       @NotBlank(message = "urn is required") @RequestParam String urn) {
-    final Resource resource = authResource.getResource(urn);
+    final Resource resource = resourceService.getResource(urn);
     return resourcePresenter.presentResourceDto(resource);
   }
 }

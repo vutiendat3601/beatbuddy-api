@@ -1,22 +1,20 @@
-package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.facade;
+package vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.impl;
 
 import static vn.io.vutiendat3601.beatbuddy.api.domain.auth.constant.UserConstant.USER_NOT_FOUND;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.exception.UserNotFoundException;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthUser;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.AuthUserRepository;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.UserService;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.outgoing.UserRepository;
 import vn.io.vutiendat3601.beatbuddy.api.util.UserContext;
 
 @RequiredArgsConstructor
-@Service
-public class AuthUserFacade implements AuthUser {
-  private final AuthUserRepository authUserRepo;
+@Service("authUserService")
+public class UserServiceImpl implements UserService {
+  private final UserRepository authUserRepo;
 
   @Override
   public User getCurrentUserDetail() {
@@ -28,9 +26,7 @@ public class AuthUserFacade implements AuthUser {
 
   @Override
   public User getUserById(String id) {
-    return authUserRepo
-        .findById(id)
-        .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
+    return authUserRepo.findById(id).orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
   }
 
   @Override

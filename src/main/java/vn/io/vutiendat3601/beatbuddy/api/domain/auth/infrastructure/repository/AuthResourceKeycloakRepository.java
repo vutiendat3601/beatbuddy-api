@@ -17,7 +17,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.Reso
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.UserManagementConfig;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.model.ResourcePo;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.model.ScopePermissionPo;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthResourceUtils;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.ResourceUtils;
 
 // @Repository
 public class AuthResourceKeycloakRepository {
@@ -37,7 +37,7 @@ public class AuthResourceKeycloakRepository {
     // Find resource
     final ResourceRepresentation resourceRep = authzClient.protection().resource().findByName(name);
     if (resourceRep != null) {
-      final String ownerId = AuthResourceUtils.getOwnerId(resourceRep);
+      final String ownerId = ResourceUtils.getOwnerId(resourceRep);
       final UserRepresentation owner =
           findUserById(ownerId).orElse(findUserByPkId(resourceRep.getOwner().getId()));
 
@@ -99,7 +99,7 @@ public class AuthResourceKeycloakRepository {
       authzClient.protection().resource().update(resourceRep);
 
       final Map<String, ScopeRepresentation> resourceScopesMap =
-          AuthResourceUtils.getScopesMap(resourceRep);
+          ResourceUtils.getScopesMap(resourceRep);
 
       // // Save permissions
       final String resourceId = resourceRep.getId();

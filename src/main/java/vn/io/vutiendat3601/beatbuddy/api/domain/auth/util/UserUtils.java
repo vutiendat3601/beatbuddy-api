@@ -13,7 +13,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.model.User;
 import vn.io.vutiendat3601.beatbuddy.api.util.StringUtils;
 
-public interface AuthUserUtils {
+public interface UserUtils {
   static String getId(UserRepresentation userRep) {
     final Map<String, List<String>> attrs = userRep.getAttributes();
     if (attrs.containsKey(USER_ID_ATTRIBUTE)) {

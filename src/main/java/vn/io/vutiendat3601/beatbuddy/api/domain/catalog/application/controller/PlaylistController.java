@@ -1,7 +1,6 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.controller;
 
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ADD_ITEM_SUCCESS;
-import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_CREATE_PERMISSION_REQUEST_SUCCESS;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_CREATE_SUCCESS;
 import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.PlaylistConstant.PLAYLIST_ID_LENGTH;
 
@@ -25,9 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.io.vutiendat3601.beatbuddy.api.common.dto.ResponseDto;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDetailDto;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.CatalogPresenter;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.PlaylistPresenter;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.PlaylistService;
 
 @Tag(name = "Playlist")
 @SecurityRequirement(name = "web")
@@ -35,8 +35,9 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Cata
 @RequestMapping("v1/playlists")
 @RestController
 public class PlaylistController {
-  private final Catalog catalog;
-  private final CatalogPresenter catalogPresenter;
+  private final PlaylistService playlistService;
+  private final CatalogPresenter commonPresenter;
+  private final PlaylistPresenter playlistPresenter;
 
   @Operation(
       summary = "Create Playlist",
@@ -50,8 +51,8 @@ public class PlaylistController {
       @NotNull(message = "isPublic is true or false") Boolean isPublic,
       String thumbnail,
       String description) {
-    catalog.createPlaylist(name, isPublic, thumbnail, description);
-    return catalogPresenter.presentResponseDtoOk(PLAYLIST_CREATE_SUCCESS);
+    playlistService.createPlaylist(name, isPublic, thumbnail, description);
+    return commonPresenter.presentResponseDtoOk(PLAYLIST_CREATE_SUCCESS);
   }
 
   @Operation(summary = "Add Items to Playlist", description = "Add Items to Playlist")
@@ -61,8 +62,8 @@ public class PlaylistController {
           @PathVariable
           String id,
       @RequestBody @NotEmpty List<String> itemUrns) {
-    catalog.addItemToPlaylist(id, itemUrns);
-    return catalogPresenter.presentResponseDtoOk(PLAYLIST_ADD_ITEM_SUCCESS);
+    playlistService.addItemToPlaylist(id, itemUrns);
+    return commonPresenter.presentResponseDtoOk(PLAYLIST_ADD_ITEM_SUCCESS);
   }
 
   @Operation(summary = "Get Playlist", description = "Get a Playlist in detail by id")
@@ -71,14 +72,14 @@ public class PlaylistController {
       @Length(min = PLAYLIST_ID_LENGTH, max = PLAYLIST_ID_LENGTH, message = "Wrong id format")
           @PathVariable
           String id) {
-    return catalogPresenter.presentPlaylistDetailDto(catalog.getPublicPlaylistById(id));
+    return playlistPresenter.presentPlaylistDetailDto(playlistService.getPlaylistById(id));
   }
 
-  @Operation(
-      summary = "Create Playlist Permission Request",
-      description = "Create Playlist Permission request")
-  @PostMapping(path = "{id}/permissions/request")
-  public ResponseEntity<ResponseDto> createPermissionRequest(@PathVariable String id) {
-    return catalogPresenter.presentResponseDtoOk(PLAYLIST_CREATE_PERMISSION_REQUEST_SUCCESS);
-  }
+  // @Operation(
+  //     summary = "Create Playlist Permission Request",
+  //     description = "Create Playlist Permission request")
+  // @PostMapping(path = "{id}/permissions/request")
+  // public ResponseEntity<ResponseDto> createPermissionRequest(@PathVariable String id) {
+  //   return commonPresenter.presentResponseDtoOk(PLAYLIST_CREATE_PERMISSION_REQUEST_SUCCESS);
+  // }
 }

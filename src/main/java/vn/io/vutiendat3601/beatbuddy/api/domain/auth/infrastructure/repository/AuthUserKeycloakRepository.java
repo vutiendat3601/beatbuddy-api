@@ -2,14 +2,12 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.auth.infrastructure.repository;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Repository;
-
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.config.client.keycloak.UserManagementConfig;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.AuthUserUtils;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.util.UserUtils;
 
 @Repository
 public class AuthUserKeycloakRepository {
@@ -38,8 +36,8 @@ public class AuthUserKeycloakRepository {
   }
 
   private UserRepresentation detectAndFixMissingAttributes(UserRepresentation userRep) {
-    if (AuthUserUtils.getId(userRep) == null) {
-      userRep = AuthUserUtils.generateRandomId(userRep);
+    if (UserUtils.getId(userRep) == null) {
+      userRep = UserUtils.generateRandomId(userRep);
       keycloak.realm(realm).users().get(userRep.getId()).update(userRep);
     }
     return userRep;

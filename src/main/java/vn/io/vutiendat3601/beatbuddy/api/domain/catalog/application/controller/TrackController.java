@@ -15,29 +15,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.TrackDto;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.TrackPresenter;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.TrackService;
 
+@Tag(name = "Track")
 @SecurityRequirement(name = "web")
 @RequiredArgsConstructor
 @RequestMapping("v1/tracks")
 @RestController
 public class TrackController {
-  private final Catalog catalog;
-  private final CatalogPresenter catalogPresenter;
+  private final TrackService trackService;
+  private final TrackPresenter trackPresenter;
 
-  @Tag(name = "Track")
   @Operation(summary = "Get Track", description = "Get a Track by id")
   @GetMapping("{id}")
   public ResponseEntity<TrackDto> getTrack(
       @Length(min = TRACK_ID_LENGTH, max = TRACK_ID_LENGTH, message = "Wrong id format")
           @PathVariable
           String id) {
-    return catalogPresenter.presentTrackDto(catalog.getTrackById(id));
+    return trackPresenter.presentTrackDto(trackService.getTrackById(id));
   }
 
-  @Tag(name = "Track")
   @Operation(summary = "Get Tracks", description = "Get several Tracks by ids")
   @GetMapping
   public ResponseEntity<List<TrackDto>> getTracks(
@@ -46,8 +45,6 @@ public class TrackController {
                   @Length(min = TRACK_ID_LENGTH, max = TRACK_ID_LENGTH, message = "Wrong id format")
                   String>
               ids) {
-    return catalogPresenter.presentTrackDtos(catalog.getTrackByIds(ids));
+    return trackPresenter.presentTrackDtos(trackService.getTrackByIds(ids));
   }
-
-  // @PostMapping("{id}/like")
 }

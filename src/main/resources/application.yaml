@@ -74,7 +74,7 @@ security:
       method: GET
       authorities: user:view
 
-    # Catalog Common
+    # Catalog
     - uris: /v1/catalog/feed/*
       method: GET
       authorities: catalog:feed
@@ -83,7 +83,7 @@ security:
       authorities: catalog:search
 
     # User
-    - uris: /v1/catalog/users,/v1/catalog/users/{id},/v1/auth/users,/v1/auth/users/{id}
+    - uris: /v1/users,/v1/users/{id},/v1/auth/users,/v1/auth/users/{id}
       method: GET
       authorities: user:view
 

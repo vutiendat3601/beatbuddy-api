@@ -12,20 +12,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.CatalogPresenter;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.LikeDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.model.PlaylistDto;
-import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.Catalog;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.CatalogPresenter;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.application.presenter.PlaylistPresenter;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.CatalogService;
+import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.port.incomming.PlaylistService;
 
+@Tag(name = "Playlist")
 @SecurityRequirement(name = "web")
 @RequiredArgsConstructor
 @RequestMapping("v1/me")
 @RestController
 public class MeController {
-  private final Catalog catalog;
-  private final CatalogPresenter catalogPresenter;
+  private final CatalogService catalog;
+  private final PlaylistService playlistService;
+  private final PlaylistPresenter playlistPresenter;
+  private final CatalogPresenter commonPresenter;
 
-  @Tag(name = "Playlist")
   @Operation(
       summary = "Get Authenticated User Playlists",
       description = "Get Authenticated User Playlists")
@@ -37,13 +41,14 @@ public class MeController {
       @Range(min = 1, max = 50, message = "size must be in range [1, 50]")
           @RequestParam(required = false, defaultValue = "10")
           Integer size) {
-    return catalogPresenter.presentPlaylistDtoPage(catalog.getUserPlaylists(page - 1, size));
+    return playlistPresenter.presentPlaylistDtoPage(
+        playlistService.getUserPlaylists(page - 1, size));
   }
 
-  @Tag(name = "Catalog")
+  @Tag(name = "Me")
   @Operation(summary = "Get User Like Detail", description = "Get current User's Like in detail")
   @GetMapping("like")
   public ResponseEntity<LikeDto> getCurrentUserLikeDetail() {
-    return catalogPresenter.presentLikeDto(catalog.getCurrentUserLikeDetail());
+    return commonPresenter.presentLikeDto(catalog.getCurrentUserLikeDetail());
   }
 }

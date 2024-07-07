@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model.UserDto;
 import vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.presenter.UserPresenter;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthUser;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.UserService;
 
 @Tag(name = "Auth")
 @SecurityRequirement(name = "web")
@@ -25,7 +25,7 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.auth.core.port.incomming.AuthUse
 @RequestMapping("v1/auth/users")
 public class UserController {
   private final UserPresenter userPresenter;
-  private final AuthUser userResource;
+  private final UserService userResource;
 
   @Operation(summary = "Get User by id")
   @GetMapping("{id}")

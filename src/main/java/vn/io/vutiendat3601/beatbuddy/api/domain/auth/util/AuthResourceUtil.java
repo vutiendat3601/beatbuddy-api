@@ -1,6 +1,6 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.auth.util;
 
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource.ResourceUrn;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.ResourceUrn;
 
 public class AuthResourceUtil {
   private final int urnNumberOfParts;

@@ -2,13 +2,11 @@ package vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.adapter;
 
 import java.util.List;
 import java.util.Optional;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
-import lombok.RequiredArgsConstructor;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.Pagination;
 import vn.io.vutiendat3601.beatbuddy.api.common.type.SearchRequest;
 import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.core.model.Track;
@@ -28,6 +26,11 @@ public class TrackJpaRepositoryAdapter implements TrackRepository {
   }
 
   @Override
+  public Optional<Track> findByUrn(String urn) {
+    return trackJpaRepo.findByUrn(urn).map(TrackMapper::mapToTrack);
+  }
+
+  @Override
   public List<Track> findByIds(Iterable<String> ids) {
     return trackJpaRepo.findByIdIn(ids).stream().map(TrackMapper::mapToTrack).toList();
   }
@@ -35,9 +38,9 @@ public class TrackJpaRepositoryAdapter implements TrackRepository {
   @Override
   public Pagination<Track> findByArtistsIdOrderByTotalLikesDesc(
       String artistId, int page, int size) {
-    Page<TrackPo> trackPoPage =
+    final Page<TrackPo> trackPoPage =
         trackJpaRepo.findByArtistsIdOrderByTotalLikesDesc(artistId, PageRequest.of(page, size));
-    Page<Track> trackPage = trackPoPage.map(TrackMapper::mapToTrack);
+    final Page<Track> trackPage = trackPoPage.map(TrackMapper::mapToTrack);
     return Pagination.of(trackPage);
   }
 

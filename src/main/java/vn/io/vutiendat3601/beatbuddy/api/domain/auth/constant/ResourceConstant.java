@@ -6,6 +6,8 @@ public interface ResourceConstant {
   String RESOURCE_TYPE_NOT_FOUND = "Resource type not found";
 
   String RESOURCE_OWNER_ID_ATTRIBUTE = "owerId";
+
+  String RESOURCE_NOT_FOUND = "Resource not found";
   // User
   // String USER_TYPE = "user";
   // String USER_URN_PREFIX = "beatbuddy:user";

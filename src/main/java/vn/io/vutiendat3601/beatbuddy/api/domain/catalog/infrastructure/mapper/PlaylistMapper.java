@@ -5,17 +5,17 @@ import vn.io.vutiendat3601.beatbuddy.api.domain.catalog.infrastructure.model.Pla
 
 public interface PlaylistMapper {
   static Playlist mapToPlaylist(PlaylistPo playlistPo) {
-    return new Playlist(
-        playlistPo.getPkId(),
-        playlistPo.getId(),
-        playlistPo.getUrn(),
-        playlistPo.getName(),
-        playlistPo.getThumbnail(),
-        playlistPo.getDescription(),
-        playlistPo.getIsPublic(),
-        playlistPo.getTotalLikes(),
-        playlistPo.getOwnerId(),
-        playlistPo.getIsDeleted(),
-        playlistPo.getItemUrns());
+    return Playlist.builder()
+        .pkId(playlistPo.getPkId())
+        .id(playlistPo.getId())
+        .urn(playlistPo.getUrn())
+        .name(playlistPo.getName())
+        .description(playlistPo.getDescription())
+        .thumbnail(playlistPo.getThumbnail())
+        .isPublic(playlistPo.getIsPublic())
+        .totalLikes(playlistPo.getTotalLikes())
+        .itemUrns(playlistPo.getItemUrns())
+        .ownerId(playlistPo.getOwnerId())
+        .build();
   }
 }

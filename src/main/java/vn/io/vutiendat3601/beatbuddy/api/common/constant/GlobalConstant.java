@@ -9,7 +9,15 @@ import static vn.io.vutiendat3601.beatbuddy.api.domain.catalog.constant.TrackCon
 
 import java.util.Map;
 
-public class GlobalConstant {
-  public static final Map<String, String> RESOURCE_TYPES =
-      Map.of(TRACK_URN_PREFIX, TRACK_TYPE, ARTIST_URN_PREFIX, ARTIST_TYPE, PLAYLIST_URN_PREFIX, PLAYLIST_TYPE);
+public interface GlobalConstant {
+  Map<String, String> RESOURCE_TYPES =
+      Map.of(
+          TRACK_URN_PREFIX,
+          TRACK_TYPE,
+          ARTIST_URN_PREFIX,
+          ARTIST_TYPE,
+          PLAYLIST_URN_PREFIX,
+          PLAYLIST_TYPE);
+
+  String REQUEST_PROCESSED_SUCCESS = "Request processed successfully";
 }

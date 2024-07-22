@@ -1,13 +1,12 @@
 package vn.io.vutiendat3601.beatbuddy.api.domain.auth.application.model;
 
-import java.util.Set;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.resource.IdentityProvider;
+import vn.io.vutiendat3601.beatbuddy.api.domain.auth.type.IdentityProvider;
 
 @Schema(name = "UserDetail", description = "Schema holding user information in detail")
 @SuperBuilder
